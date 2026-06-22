@@ -29,10 +29,9 @@ if "categoria_activa" not in st.session_state:
 if "vista_actual" not in st.session_state:
     st.session_state["vista_actual"] = "menu_categorias"
 
-# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES
-FONDOS_DISPONIBLES = ["pag1.jpeg", "pag2.jpeg", "pag3.jpeg", "pag5.jpeg", "pag6.jpeg"]
+# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES (Fijado a pag1.jpeg)
 if "fondo_seleccionado" not in st.session_state:
-    st.session_state["fondo_seleccionado"] = random.choice(FONDOS_DISPONIBLES)
+    st.session_state["fondo_seleccionado"] = "pag1.jpeg"
 
 # 4. DECLARACIÓN DE FUNCIONES DE CARGA Y ESTILOS
 @st.cache_data
@@ -44,53 +43,23 @@ def cargar_imagen_b64(nombre_imagen):
     return None
 
 def aplicar_fondo_stable():
-   img_b64 = cargar_imagen_b64(st.session_state["fondo_seleccionado"])
-   if img_b64:
+    img_b64 = cargar_imagen_b64(st.session_state["fondo_seleccionado"])
+    if img_b64:
         st.markdown(f"""
         <style>
         [data-testid="stAppViewContainer"] {{
             background: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url('data:image/jpeg;base64,{img_b64}') !important;
-           background-size: cover !important; background-repeat: no-repeat !
-important; background-position: center 
-center !important; background-attachment: fixed !important;
+            background-size: cover !important; 
+            background-repeat: no-repeat !important; 
+            background-position: center center !important; 
+            background-attachment: fixed !important;
         }}
-       .main, [data-testid="stCanvas"], [data-testid="stTabPanel"], div[role="tabpanel"], div[data-testid="stVerticalBlock"], [data-testid="stApp"], [data-testid="stHeader"] {{
-           background-color: transparent !important; background: transparent !important; box-shadow: none !important;
-       }}
+        .main, [data-testid="stCanvas"], [data-testid="stTabPanel"], div[role="tabpanel"], div[data-testid="stVerticalBlock"], [data-testid="stApp"], [data-testid="stHeader"] {{
+            background-color: transparent !important; background: transparent !important; box-shadow: none !important;
+        }}
         </style>
-       """, unsafe_allow_html=True)
-def aplicar_fondo_stable():
-    fondo = st.session_state["fondo_seleccionado"]
+        """, unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <style>
-    [data-testid="stAppViewContainer"] {{
-        background:
-            linear-gradient(
-                rgba(0, 0, 0, 0.60),
-                rgba(0, 0, 0, 0.60)
-            ),
-            url("images/{fondo}") !important;
-
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
-        background-position: center center !important;
-        background-attachment: scroll !important;
-    }}
-
-    .main,
-    [data-testid="stCanvas"],
-    [data-testid="stTabPanel"],
-    div[role="tabpanel"],
-    div[data-testid="stVerticalBlock"],
-    [data-testid="stApp"],
-    [data-testid="stHeader"] {{
-        background-color: transparent !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }}
-    </style>
-    """, unsafe_allow_html=True)
 @st.cache_data(ttl=10)
 def cargar_catalogo_limpio():
     nombre_archivo = "Catalogo_Productos.xlsx"
