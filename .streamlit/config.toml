@@ -1,4 +1,6 @@
 [server]
 enableCORS = false
 enableXsrfProtection = false
-websocketMinTimeout = 60
+
+[browser]
+gatherUsageStats = false
