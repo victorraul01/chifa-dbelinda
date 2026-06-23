@@ -175,13 +175,34 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO
+# CSS MAESTRO - ACTUALIZADO (ELIMINA MANAGE APP Y CORRIGE BORDE)
 # =========================================================
 st.markdown("""
 <style>
-html, body, [data-testid="stApp"] { margin: 0 !important; padding: 0 !important; }
-[data-testid="stMainBlockContainer"] { padding-top: 0px !important; padding-bottom: 0px !important; }
-.main .block-container { padding-top: 0px !important; max-width: 100% !important; }
+/* 1. ELIMINACIÓN TOTAL DE LA BARRA 'MANAGE APP' DE STREAMLIT Y AJUSTE DE MARGEN INFERIOR */
+div[data-testid="stManageAppButton"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0px !important;
+    width: 0px !important;
+}
+
+html, body, [data-testid="stApp"] { 
+    margin: 0 !important; 
+    padding: 0 !important; 
+}
+
+/* Margen de seguridad abajo para que no se tape el último plato en ningún celular */
+[data-testid="stMainBlockContainer"] { 
+    padding-top: 0px !important; 
+    padding-bottom: 120px !important; 
+}
+.main .block-container { 
+    padding-top: 0px !important; 
+    padding-bottom: 120px !important;
+    max-width: 100% !important; 
+}
 
 .cabecera-fija-chifa {
     position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important;
@@ -196,7 +217,7 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 
 .contenedor-seccion-platos {
     padding: 10px 5px 0px 5px !important;
-    margin-bottom: 120px !important;
+    margin-bottom: 40px !important;
 }
 
 div.lista-categorias-vertical div.stButton > button {
@@ -213,7 +234,7 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* ALINEACIÓN Y CONTROL ULTRA ESTRICTO DE COLUMNAS HORIZONTALES */
+/* ALINEACIÓN DE COLUMNAS HORIZONTALES */
 div[data-testid="stHorizontalBlock"] {
     display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
     align-items: center !important; justify-content: space-between !important; width: 100% !important;
@@ -252,7 +273,7 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* CONTROL ABSOLUTO DEL BOTÓN COMPACTO "＋" CON BORDE MEJORADO */
+/* 2. CONTROL DEL BOTÓN COMPACTO "＋" CON FORZADO DE BORDE ROJO EN MÓVILES */
 div.btn-mas-nativo {
     display: flex !important;
     align-items: center !important;
@@ -261,30 +282,36 @@ div.btn-mas-nativo {
 }
 
 div.btn-mas-nativo div.stButton > button {
-    background-color: #FFEB3B !important; /* Forzado Amarillo Puro */
-    color: #000000 !important; /* Signo "+" en Negro Absoluto */
-    font-size: 13px !important; 
+    background-color: #FFEB3B !important;
+    color: #000000 !important;
+    font-size: 14px !important; 
     font-weight: 900 !important;
-    border-radius: 4px !important; 
-    width: 24px !important; height: 24px !important; /* Ligeramente ajustado para encuadrar el borde */
-    min-width: 24px !important; max-width: 24px !important;
+    border-radius: 5px !important; 
+    width: 28px !important; 
+    height: 28px !important; 
+    min-width: 28px !important; 
+    max-width: 28px !important;
     padding: 0px !important; 
     display: inline-flex !important; 
     align-items: center !important; 
     justify-content: center !important;
-    border: 2px solid #8B0000 !important; /* NUEVO: Borde Rojo Oscuro Grueso para Alta Visibilidad */
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important; /* Sombra más pronunciada */
+    
+    /* Reglas para obligar al navegador a renderizar el borde sólido */
+    -webkit-appearance: none !important;
+    box-sizing: border-box !important;
+    border: 2px solid #8B0000 !important; 
+    
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important; 
     margin: 0px !important;
 }
 
-/* Sobrescribimos cualquier cambio de estado reactivo del navegador */
+/* Forzar estados reactivos */
 div.btn-mas-nativo div.stButton > button:hover, 
 div.btn-mas-nativo div.stButton > button:focus, 
 div.btn-mas-nativo div.stButton > button:active {
     background-color: #FFEB3B !important;
     color: #000000 !important;
     border: 2px solid #8B0000 !important;
-    box-shadow: 0px 1px 2px rgba(0,0,0,0.4) !important;
 }
 
 .divisor-plato { 
