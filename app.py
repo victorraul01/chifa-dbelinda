@@ -171,18 +171,21 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 div.contenedor-categoria-limpio div.stButton > button {
     display: block !important;
     background: #F5F5F5 !important;
-    color: #000000 !important;
     border: 2px solid #D9D9D9 !important;
     border-radius: 10px !important;
     padding: 14px 10px !important;
     width: 100% !important;
     height: auto !important;
-    font-size: 16px !important;
-    font-weight: 900 !important;
-    font-family: sans-serif !important;
-    text-shadow: none !important;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.2) !important;
     margin-bottom: 12px !important;
+}
+
+/* FORZAR TEXTO NEGRO EN BOTONES */
+div.contenedor-categoria-limpio div.stButton > button p {
+    color: #000000 !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
 }
 
 div.contenedor-categoria-limpio div.stButton > button:hover, 
@@ -190,12 +193,18 @@ div.contenedor-categoria-limpio div.stButton > button:active,
 div.contenedor-categoria-limpio div.stButton > button:focus {
     background: #E0E0E0 !important;
     border-color: #BDBDBD !important;
+}
+
+/* FORZAR TEXTO NEGRO AL PASAR EL DEDO */
+div.contenedor-categoria-limpio div.stButton > button:hover p,
+div.contenedor-categoria-limpio div.stButton > button:active p,
+div.contenedor-categoria-limpio div.stButton > button:focus p {
     color: #000000 !important;
+    text-shadow: none !important;
 }
 
 div.boton-retroceder-contenedor div.stButton > button {
     background-color: #F5F5F5 !important;
-    color: #000000 !important;
     border: 1px solid #BDBDBD !important;
     padding: 8px 15px !important;
     font-size: 14px !important;
@@ -203,6 +212,13 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important;
     width: auto !important;
     margin-bottom: 15px !important;
+}
+
+/* TEXTO DEL BOTÓN VOLVER */
+div.boton-retroceder-contenedor div.stButton > button p {
+    color: #000000 !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
 }
 
 div[data-testid="stHorizontalBlock"] { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; }
