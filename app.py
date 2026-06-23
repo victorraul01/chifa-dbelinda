@@ -36,8 +36,8 @@ if "fondo_seleccionado" not in st.session_state:
 # 4. DECLARACIÓN DE FUNCIONES DE CARGA Y ESTILOS
 @st.cache_data
 def cargar_imagen_b64(nombre_imagen):
-    rutas_posibles = [os.path.join("images", nombre_imagen), os.path.join("app", "static", "images", nombre_imagen), nombre_imagen]
-    for r in rutas_posibles:
+    routes_posibles = [os.path.join("images", nombre_imagen), os.path.join("app", "static", "images", nombre_imagen), nombre_imagen]
+    for r in routes_posibles:
         if os.path.exists(r):
             with open(r, "rb") as f: return base64.b64encode(f.read()).decode()
     return None
@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO 
+# CSS MAESTRO (Modificado según requerimientos)
 # =========================================================
 st.markdown("""
 <style>
@@ -216,9 +216,32 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
 .columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
-.texto-nombre-plato { color: #FFFFFF !important; font-size: 15px !important; font-weight: 800 !important; text-shadow: 2px 2px 3px #000000 !important; }
-.texto-descripcion-plato { color: #CCCCCC !important; font-size: 11.5px !important; font-style: italic !important; margin-top: 3px; display: block; text-shadow: 1px 1px 2px #000000 !important; line-height: 1.2; }
-.texto-precio-plato { color: #FFEB3B !important; font-size: 14.5px !important; font-weight: 900 !important; text-shadow: 2px 2px 2px #000000 !important; white-space: nowrap !important; margin-right: 2px;}
+
+/* 1. TEXTOS MÁS GRANDES, NOTORIOS Y CON BORDE NEGRO RESALTANTE */
+.texto-nombre-plato { 
+    color: #FFFFFF !important; 
+    font-size: 17px !important; /* Más grande */
+    font-weight: 900 !important; /* Más grueso */
+    /* Borde negro simulado por 4 ejes limpios */
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
+}
+.texto-descripcion-plato { 
+    color: #FFFFFF !important; 
+    font-size: 12.5px !important; 
+    font-style: italic !important; 
+    margin-top: 2px; 
+    display: block; 
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
+    line-height: 1.2; 
+}
+.texto-precio-plato { 
+    color: #FFEB3B !important; 
+    font-size: 16px !important; /* Más grande */
+    font-weight: 900 !important; 
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
+    white-space: nowrap !important; 
+    margin-right: 2px;
+}
 
 div.btn-mas-nativo div.stButton > button {
     background-color: #FFEB3B !important; color: #8B0000 !important; font-size: 18px !important; font-weight: 900 !important;
@@ -227,7 +250,30 @@ div.btn-mas-nativo div.stButton > button {
     border: none !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important;
 }
 
-.divisor-plato { border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important; margin-bottom: 5px; padding-bottom: 5px; }
+/* 2. QUITAR LÍNEA DE SEPARACIÓN TOTALMENTE */
+.divisor-plato { 
+    border-bottom: none !important; 
+    margin-bottom: 0px !important; 
+    padding-bottom: 0px !important; 
+}
+
+/* 3. REDUCCIÓN EXTREMA DE ESPACIO VERTICAL (RESPONSIVO EN CELULARES) */
+@media (max-width: 767px) {
+    [data-testid="stVerticalBlock"] {
+        gap: 0.15rem !important; /* Compacta los elementos de Streamlit */
+    }
+    div[data-testid="stHorizontalBlock"] {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        margin-bottom: -10px !important; /* Fuerza a las filas a juntarse hacia arriba */
+    }
+}
+
+@media (min-width: 768px) {
+    [data-testid="stVerticalBlock"] { gap: 0.5rem !important; }
+    div[data-testid="stHorizontalBlock"] { padding-top: 3px !important; padding-bottom: 3px !important; }
+}
+
 .titulo-categoria-chifa { color: #FFEB3B !important; font-size: 18px !important; font-weight: 900 !important; padding: 10px 8px !important; margin-top: 5px !important; margin-bottom: 10px !important; border-left: 5px solid #FFEB3B !important; background-color: rgba(0, 0, 0, 0.7) !important; border-radius: 0 8px 8px 0; text-shadow: 2px 2px 4px #000000 !important; }
 div[data-testid="stDialog"] div.stButton > button, div.boton-vaciar-pedido div.stButton > button { width: 100% !important; height: 45px !important; background-color: #FFEB3B !important; color: #8B0000 !important; font-size: 16px !important; font-weight: bold !important; border-radius: 8px !important; display: block !important; border: none !important; }
 div.boton-tacho-contenedor div.stButton > button { background-color: #FFEB3B !important; color: #8B0000 !important; font-size: 14px !important; width: 32px !important; height: 32px !important; border-radius: 6px !important; padding: 0px !important; display: flex !important; }
@@ -349,7 +395,7 @@ with tab_pedido:
             detalles_lista = [f"📌 {item.get('tipo','Carta')}"]
             if item.get("entrada"): detalles_lista.append(f"🍲 {item['entrada']}")
             if item.get('cremas'): detalles_lista.append(f"🧂 {item['cremas']}")
-            if item.get('notas'): detalles_lista.append(f"📝 {item['notas']}")
+            if item.get('notes'): detalles_lista.append(f"📝 {item['notes']}")
 
             st.markdown('<div class="fila-carrito-ordenada">', unsafe_allow_html=True)
             col_tacho, col_info = st.columns([0.12, 0.88])
