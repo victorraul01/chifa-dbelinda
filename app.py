@@ -409,7 +409,7 @@ with tab_menu:
 
     if not menu_activo:
         st.warning("⏰ El Menú del Día solo está disponible de 11:00 AM a 4:30 PM.")
-        st.stop()
+    else:
     st.markdown('<div class="titulo-categoria-chifa">🍱 Menú chifa del día</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
