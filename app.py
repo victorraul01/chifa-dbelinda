@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO - BOTONES DE CATEGORÍAS EN GUINDA Y BLANCO
+# CSS MAESTRO
 # =========================================================
 st.markdown("""
 <style>
@@ -193,7 +193,7 @@ html, body, [data-testid="stApp"] {
     padding: 0 !important; 
 }
 
-/* Margen de seguridad abajo para que no se tape el último plato en ningún celular */
+/* Margen de seguridad abajo */
 [data-testid="stMainBlockContainer"] { 
     padding-top: 0px !important; 
     padding-bottom: 140px !important; 
@@ -220,30 +220,37 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
     margin-bottom: 40px !important;
 }
 
-/* NUEVO ESTILO: BOTONES DE CATEGORÍAS EN GUINDA OSCURO Y LETRAS BLANCAS */
-div.lista-categorias-vertical div.stButton > button {
+/* ================================================================== */
+/* CAMBIO EXCLUSIVO: BOTONES DE CATEGORÍAS EN LA PESTAÑA CARTA        */
+/* ================================================================== */
+div.lista-categorias-carta div[data-testid="stButton"] button {
     background-color: #600000 !important; 
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.4) !important; 
     padding: 14px 18px !important;
-    font-size: 16px !important; 
-    font-weight: bold !important; 
-    text-align: left !important;
-    justify-content: flex-start !important; 
     border-radius: 10px !important; 
     width: 100% !important;
     margin-bottom: 10px !important; 
     box-shadow: 0px 4px 8px rgba(0,0,0,0.5) !important;
 }
 
-/* Estados interactivos para los botones de categorías */
-div.lista-categorias-vertical div.stButton > button:hover,
-div.lista-categorias-vertical div.stButton > button:focus,
-div.lista-categorias-vertical div.stButton > button:active {
-    background-color: #7A0000 !important;
+div.lista-categorias-carta div[data-testid="stButton"] button p,
+div.lista-categorias-carta div[data-testid="stButton"] button span {
     color: #FFFFFF !important;
+    font-size: 16px !important; 
+    font-weight: bold !important;
+    text-shadow: none !important; 
+}
+
+div.lista-categorias-carta div[data-testid="stButton"] button:hover,
+div.lista-categorias-carta div[data-testid="stButton"] button:focus,
+div.lista-categorias-carta div[data-testid="stButton"] button:active {
+    background-color: #7A0000 !important;
     border: 1px solid #FFFFFF !important;
 }
+div.lista-categorias-carta div[data-testid="stButton"] button:hover p {
+    color: #FFFFFF !important;
+}
+/* ================================================================== */
 
 div.boton-retroceder-contenedor div.stButton > button {
     background-color: #8B0000 !important; color: #FFFFFF !important; border: 1px solid #FFEB3B !important;
@@ -290,7 +297,7 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* BOTONES DE AGREGAR MÁS (＋) */
+/* BOTONES DE AGREGAR MÁS (＋) - SIN CAMBIOS */
 div[data-testid="stHorizontalBlock"] div.stButton > button {
     background-color: #FFEB3B !important;
     color: #000000 !important;
@@ -330,14 +337,8 @@ div[data-testid="stHorizontalBlock"] div.stButton > button:active {
 
 /* REDUCCIÓN DE ESPACIO VERTICAL */
 @media (max-width: 767px) {
-    [data-testid="stVerticalBlock"] {
-        gap: 0.15rem !important; 
-    }
-    div[data-testid="stHorizontalBlock"] {
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
-        margin-bottom: 0px !important; 
-    }
+    [data-testid="stVerticalBlock"] { gap: 0.15rem !important; }
+    div[data-testid="stHorizontalBlock"] { padding-top: 5px !important; padding-bottom: 5px !important; margin-bottom: 0px !important; }
 }
 
 @media (min-width: 768px) {
@@ -396,7 +397,8 @@ with tab_carta:
             categorias_excel = sorted(list(df_carta["Category"].unique()))
             todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
             
-            st.markdown('<div class="lista-categorias-vertical">', unsafe_allow_html=True)
+            # SE ENVUELVE EN LA NUEVA CLASE EXCLUSIVA PARA EVITAR BOTONES BLANCOS
+            st.markdown('<div class="lista-categorias-carta">', unsafe_allow_html=True)
             for cat in todas_categorias:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
                 st.button(f"{icono} {cat}", key=f"p_cat_{cat}", on_click=ir_a_categoria, args=(cat,), use_container_width=True)
