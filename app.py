@@ -6,14 +6,20 @@ import os
 import time
 import random
 
-# 1. CONFIGURACIÓN DE LA PÁGINA (Debe ser lo primero)
+# 1. CONFIGURACIÓN DE LA PÁGINA
 st.set_page_config(
     page_title="Chifa D' Belinda",
     page_icon="🍜",
     layout="centered"
 )
 
-# 2. INICIALIZACIÓN DE ESTADOS (Session State)
+# Capturar navegación por URL (Evita problemas de caché en botones de categorías)
+query_params = st.query_params
+if "cat" in query_params:
+    st.session_state["categoria_activa"] = query_params["cat"]
+    st.session_state["vista_actual"] = "ver_platos"
+
+# 2. INICIALIZACIÓN DE ESTADOS
 if "carrito" not in st.session_state:
     st.session_state["carrito"] = []
 
@@ -29,11 +35,10 @@ if "categoria_activa" not in st.session_state:
 if "vista_actual" not in st.session_state:
     st.session_state["vista_actual"] = "menu_categorias"
 
-# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES (Fijado a pag1.jpeg)
 if "fondo_seleccionado" not in st.session_state:
     st.session_state["fondo_seleccionado"] = "pag1.jpeg"
 
-# 4. DECLARACIÓN DE FUNCIONES DE CARGA Y ESTILOS
+# 3. FUNCIONES DE CARGA Y ESTILOS
 @st.cache_data
 def cargar_imagen_b64(nombre_imagen):
     routes_posibles = [os.path.join("images", nombre_imagen), os.path.join("app", "static", "images", nombre_imagen), nombre_imagen]
@@ -77,11 +82,10 @@ def cargar_catalogo_limpio():
         df['Description'] = df['Description'].fillna("").astype(str).str.strip()
     return df
 
-# Ejecutamos las llamadas iniciales inmediatamente después de definirlas
 aplicar_fondo_stable()
 df_carta = cargar_catalogo_limpio()
 
-# 5. MENÚS Y CALLBACKS
+# 4. MENÚS Y CALLBACKS
 PLATOS_MENU_INTERNO = [
     {"ID": "M01", "Name": "Chaufa de Pollo", "Price": 14.00},
     {"ID": "M02", "Name": "Alita Rebozada", "Price": 15.00},
@@ -120,19 +124,18 @@ def click_agregar_plato(plato_info, origen, categoria):
     st.session_state["modal_categoria"] = categoria
     st.session_state["mostrar_modal"] = True
 
-def ir_a_categoria(categoria):
-    st.session_state["categoria_activa"] = categoria
-    st.session_state["vista_actual"] = "ver_platos"
-
 def regresar_a_categorias():
+    st.query_params.clear()
+    st.session_state["categoria_activa"] = None
     st.session_state["vista_actual"] = "menu_categorias"
+    st.rerun()
 
 def eliminar_del_carrito(uid):
     st.session_state.carrito = [item for item in st.session_state.carrito if item["uid"] != uid]
     st.rerun()
 
 # =========================================================
-# MODAL DE CONFIGURACIÓN
+# MODAL DE CONFIGURACIÓN DIALOG
 # =========================================================
 @st.dialog("Configura tu Plato 🍜")
 def abrir_modal_dinamico():
@@ -168,90 +171,71 @@ def abrir_modal_dinamico():
         
         nuevo_item = {
             "uid": time.time() + random.sample(range(100), 1)[0], "id": p_info["ID"], "nombre": p_info["Name"], "precio": float(p_info["Price"]),
-            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notes.strip() if 'notes' in locals() else notas.strip(), "tipo": p_orig, "entrada": entrada_sel
+            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notas.strip(), "tipo": p_orig, "entrada": entrada_sel
         }
         st.session_state["carrito"].append(nuevo_item)
         st.session_state["mostrar_modal"] = False
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO
+# CSS MAESTRO INYECTADO (Elimina capas fantasmas)
 # =========================================================
 st.markdown("""
 <style>
-/* 1. ELIMINACIÓN TOTAL DE LA BARRA 'MANAGE APP' DE STREAMLIT */
-div[data-testid="stManageAppButton"], [data-testid="stManageAppButton"] {
+/* Ocultar barra Manage App */
+div[data-testid="stManageAppButton"], [data-testid="stManageAppButton"], .stDeployButton {
     display: none !important;
     visibility: hidden !important;
-    opacity: 0 !important;
     height: 0px !important;
-    width: 0px !important;
 }
 
-html, body, [data-testid="stApp"] { 
-    margin: 0 !important; 
-    padding: 0 !important; 
-}
-
-/* Margen de seguridad abajo */
-[data-testid="stMainBlockContainer"] { 
-    padding-top: 0px !important; 
-    padding-bottom: 140px !important; 
-}
-.main .block-container { 
-    padding-top: 0px !important; 
-    padding-bottom: 140px !important;
-    max-width: 100% !important; 
-}
+html, body, [data-testid="stApp"] { margin: 0 !important; padding: 0 !important; }
+[data-testid="stMainBlockContainer"] { padding-top: 0px !important; padding-bottom: 140px !important; }
+.main .block-container { padding-top: 0px !important; padding-bottom: 140px !important; max-width: 100% !important; }
 
 .cabecera-fija-chifa {
     position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important;
-    z-index: 999999 !important; background-color: rgba(0, 0, 0, 0.75) !important;
+    z-index: 999999 !important; background-color: rgba(0, 0, 0, 0.85) !important;
     backdrop-filter: blur(8px) !important; -webkit-backdrop-filter: blur(8px) !important; padding: 15px 10px !important; text-align: center;
-    border-bottom: 1px solid rgba(255, 235, 59, 0.2);
+    border-bottom: 2px solid #FFEB3B;
 }
 
 div[data-testid="stTabs"] { margin-top: 95px !important; }
 div[data-testid="stTabs"] > div:first-child { background-color: transparent !important; padding: 4px 10px !important; border-bottom: 2px solid #FFEB3B !important; }
 div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px !important; font-weight: bold !important; text-shadow: 2px 2px 3px #000000 !important; }
 
-.contenedor-seccion-platos {
-    padding: 10px 5px 0px 5px !important;
-    margin-bottom: 40px !important;
-}
+.contenedor-seccion-platos { padding: 10px 5px 0px 5px !important; margin-bottom: 40px !important; }
 
 /* ================================================================== */
-/* NUEVA REDEFINICIÓN EXTRA FUERTE: BOTONES SEMITRANSPARENTES + TEXTO AMARILLO BORDEADO */
+/* DISEÑO TOTALMENTE CONTROLADO POR HTML PARA LAS CATEGORÍAS */
 /* ================================================================== */
-div.lista-categorias-carta div[data-testid="stButton"] button {
-    background-color: rgba(0, 0, 0, 0.55) !important; 
+.tarjeta-categoria-link {
+    display: block !important;
     background: rgba(0, 0, 0, 0.55) !important;
-    border: 2px solid #FFEB3B !important; 
+    background-color: rgba(0, 0, 0, 0.55) !important;
+    border: 2px solid #FFEB3B !important;
+    border-radius: 12px !important;
     padding: 14px 18px !important;
-    border-radius: 12px !important; 
-    width: 100% !important;
-    margin-bottom: 12px !important; 
+    margin-bottom: 14px !important;
+    text-align: center !important;
+    text-decoration: none !important;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.7) !important;
+    transition: background 0.2s ease;
 }
 
-/* Forzar Texto Amarillo con borde negro muy grueso */
-div.lista-categorias-carta div[data-testid="stButton"] button p,
-div.lista-categorias-carta div[data-testid="stButton"] button span,
-div.lista-categorias-carta div[data-testid="stButton"] button div {
+.tarjeta-categoria-link:hover, .tarjeta-categoria-link:active {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-color: #FFFFFF !important;
+}
+
+.texto-categoria-personalizado {
     color: #FFEB3B !important;
-    font-size: 17px !important; 
+    font-size: 18px !important;
     font-weight: 900 !important;
+    font-family: sans-serif !important;
     text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
     text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000 !important;
-    -webkit-text-stroke: 0.5px black;
-}
-
-/* Hover / Touch */
-div.lista-categorias-carta div[data-testid="stButton"] button:hover,
-div.lista-categorias-carta div[data-testid="stButton"] button:focus,
-div.lista-categorias-carta div[data-testid="stButton"] button:active {
-    background-color: rgba(0, 0, 0, 0.85) !important;
-    border: 2px solid #FFFFFF !important;
 }
 /* ================================================================== */
 
@@ -261,92 +245,28 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* ALINEACIÓN DE COLUMNAS HORIZONTALES */
-div[data-testid="stHorizontalBlock"] {
-    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-    align-items: center !important; justify-content: space-between !important; width: 100% !important;
-}
-div[data-testid="stHorizontalBlock"] > div { 
-    min-width: 0 !important; 
-    display: flex !important;
-    align-items: center !important;
-}
-
+div[data-testid="stHorizontalBlock"] { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; }
+div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; display: flex !important; align-items: center !important; }
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
 .columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
-.texto-nombre-plato { 
-    color: #FFFFFF !important; 
-    font-size: 17px !important; 
-    font-weight: 900 !important; 
-    line-height: 1.3 !important; 
-    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
-}
-.texto-descripcion-plato { 
-    color: #FFFFFF !important; 
-    font-size: 13.5px !important; 
-    font-style: italic !important; 
-    margin-top: 2px; 
-    display: block; 
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
-    line-height: 1.2; 
-}
-.texto-precio-plato { 
-    color: #FFEB3B !important; 
-    font-size: 16px !important; 
-    font-weight: 900 !important; 
-    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, -1.5px 1.5px 0 #000 !important;
-    white-space: nowrap !important; 
-    margin-right: 2px;
-}
+.texto-nombre-plato { color: #FFFFFF !important; font-size: 17px !important; font-weight: 900 !important; line-height: 1.3 !important; text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; }
+.texto-descripcion-plato { color: #FFFFFF !important; font-size: 13.5px !important; font-style: italic !important; margin-top: 2px; display: block; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important; line-height: 1.2; }
+.texto-precio-plato { color: #FFEB3B !important; font-size: 16px !important; font-weight: 900 !important; text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, -1.5px 1.5px 0 #000 !important; white-space: nowrap !important; margin-right: 2px; }
 
-/* BOTONES DE AGREGAR MÁS (＋) - ESTÉTICA ORIGINAL */
+/* Botón más (+) */
 div[data-testid="stHorizontalBlock"] div.stButton > button {
-    background-color: #FFEB3B !important;
-    color: #000000 !important;
-    border: 2px solid #8B0000 !important;
-    border-radius: 6px !important;
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    max-width: 32px !important;
-    padding: 0px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-weight: 900 !important;
-    font-size: 16px !important;
-    box-shadow: 0px 3px 5px rgba(0,0,0,0.5) !important;
-    -webkit-appearance: none !important;
-    box-sizing: border-box !important;
+    background-color: #FFEB3B !important; color: #000000 !important; border: 2px solid #8B0000 !important;
+    border-radius: 6px !important; width: 32px !important; height: 32px !important; min-width: 32px !important;
+    max-width: 32px !important; padding: 0px !important; display: inline-flex !important; align-items: center !important;
+    justify-content: center !important; font-weight: 900 !important; font-size: 16px !important; box-shadow: 0px 3px 5px rgba(0,0,0,0.5) !important;
 }
 
-div[data-testid="stHorizontalBlock"] div.stButton > button:hover,
-div[data-testid="stHorizontalBlock"] div.stButton > button:focus,
-div[data-testid="stHorizontalBlock"] div.stButton > button:active {
-    background-color: #FFEB3B !important;
-    color: #000000 !important;
-    border: 2px solid #8B0000 !important;
-    box-shadow: 0px 1px 2px rgba(0,0,0,0.5) !important;
-}
+.divisor-plato { border-bottom: none !important; margin-top: 15px !important; margin-bottom: 15px !important; clear: both; }
 
-.divisor-plato { 
-    border-bottom: none !important;  
-    margin-top: 15px !important;     
-    margin-bottom: 15px !important;  
-    padding-bottom: 0px !important; 
-    clear: both;
-}
-
-/* REDUCCIÓN DE ESPACIO VERTICAL */
 @media (max-width: 767px) {
     [data-testid="stVerticalBlock"] { gap: 0.15rem !important; }
-    div[data-testid="stHorizontalBlock"] { padding-top: 5px !important; padding-bottom: 5px !important; margin-bottom: 0px !important; }
-}
-
-@media (min-width: 768px) {
-    [data-testid="stVerticalBlock"] { gap: 0.5rem !important; }
-    div[data-testid="stHorizontalBlock"] { padding-top: 6px !important; padding-bottom: 6px !important; }
+    div[data-testid="stHorizontalBlock"] { padding-top: 5px !important; padding-bottom: 5px !important; }
 }
 
 .titulo-categoria-chifa { color: #FFEB3B !important; font-size: 18px !important; font-weight: 900 !important; padding: 10px 8px !important; margin-top: 5px !important; margin-bottom: 10px !important; border-left: 5px solid #FFEB3B !important; background-color: rgba(0, 0, 0, 0.7) !important; border-radius: 0 8px 8px 0; text-shadow: 2px 2px 4px #000000 !important; }
@@ -363,7 +283,7 @@ div.boton-tacho-contenedor div.stButton > button { background-color: #FFEB3B !im
 </style>
 """, unsafe_allow_html=True)
 
-# 6. ENCABEZADO FIJO DE LA APLICACIÓN
+# 5. ENCABEZADO FIJO
 st.markdown("""
 <div class="cabecera-fija-chifa">
     <h2 style="margin: 0; font-size: 25px; color: #FFEB3B; font-family: sans-serif; text-shadow: 2px 2px 4px #000000;">🍜 CHIFA D' BELINDA</h2>
@@ -374,7 +294,7 @@ st.markdown("""
 items_en_carrito = sum(item["cant"] for item in st.session_state.carrito)
 tab_menu, tab_carta, tab_pedido = st.tabs(["🍱 Menú del Día", "📖 Platos a la Carta", f"🛒 Mi Pedido ({items_en_carrito})"])
 
-# PESTAÑA: 🍱 MENÚ DEL DÍA
+# PESTAÑA: MENÚ DEL DÍA
 with tab_menu:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
@@ -388,24 +308,27 @@ with tab_menu:
         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# PESTAÑA: 📖 PLATOS A LA CARTA
+# PESTAÑA: PLATOS A LA CARTA
 with tab_carta:
     if df_carta.empty:
         st.warning("⚠️ Por favor, carga tu archivo del catálogo.")
     else:
-        st.write("")
         if st.session_state["vista_actual"] == "menu_categorias":
             st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
-            st.markdown('<p style="color: #FFEB3B; font-weight: bold; margin-bottom: 12px; font-size:16px; text-shadow: 1px 1px 2px black;">📖 Elige una sección de nuestra Carta:</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFEB3B; font-weight: bold; margin-bottom: 16px; font-size:16px; text-shadow: 1px 1px 2px black;">📖 Elige una sección de nuestra Carta:</p>', unsafe_allow_html=True)
+            
             categorias_excel = sorted(list(df_carta["Category"].unique()))
             todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
             
-            # CONTENEDOR EXCLUSIVO QUE FUERZA LOS BOTONES SEMITRANSPARENTES OSCUROS
-            st.markdown('<div class="lista-categorias-carta">', unsafe_allow_html=True)
+            # CONTROL COMPLETO EN HTML - Cero interferencia de Streamlit
             for cat in todas_categorias:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
-                st.button(f"{icono} {cat}", key=f"p_cat_{cat}", on_click=ir_a_categoria, args=(cat,), use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+                url_destino = f"?cat={urllib.parse.quote(cat)}"
+                st.markdown(f"""
+                    <a href="{url_destino}" target="_self" class="tarjeta-categoria-link">
+                        <span class="texto-categoria-personalizado">{icono} {cat}</span>
+                    </a>
+                """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
         elif st.session_state["vista_actual"] == "ver_platos":
@@ -452,7 +375,7 @@ with tab_carta:
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
-# PESTAÑA: 🛒 MI PEDIDO
+# PESTAÑA: MI PEDIDO
 with tab_pedido:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
     if not st.session_state.carrito:
