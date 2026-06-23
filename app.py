@@ -4,6 +4,7 @@ import base64
 import os
 import time
 import random
+from datetime import datetime
 
 # 1. CONFIGURACIÓN DE LA PÁGINA
 st.set_page_config(
@@ -387,11 +388,29 @@ PLATOS_MENU_INTERNO = [
 ]
 
 items_en_carrito = sum(item["cant"] for item in st.session_state.carrito)
-tab_menu, tab_carta, tab_pedido = st.tabs(["🍱 Menú del Día", "📖 Platos a la Carta", f"🛒 Mi Pedido ({items_en_carrito})"])
 
+# Hora actual
+hora_actual = datetime.now().time()
+
+# Horario permitido (11:00 AM a 4:30 PM)
+menu_activo = (
+    hora_actual >= datetime.strptime("11:00", "%H:%M").time()
+    and hora_actual <= datetime.strptime("16:30", "%H:%M").time()
+)
+
+tab_menu, tab_carta, tab_pedido = st.tabs([
+    "🍱 Menú del Día",
+    "📖 Platos a la Carta",
+    f"🛒 Mi Pedido ({items_en_carrito})"
+])
 # PESTAÑA: MENÚ DEL DÍA
 with tab_menu:
+    with tab_menu:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
+
+    if not menu_activo:
+        st.warning("⏰ El Menú del Día solo está disponible de 11:00 AM a 4:30 PM.")
+        st.stop()
     st.markdown('<div class="titulo-categoria-chifa">🍱 Menú chifa del día</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
