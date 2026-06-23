@@ -6,7 +6,7 @@ import os
 import time
 import random
 
-# 1. CONFIGURACIÓN DE LA PÁGINA (Debe ser lo primero)
+# 1. CONFIGURACIÓN DE LA PÁGINA
 st.set_page_config(
     page_title="Chifa D' Belinda",
     page_icon="🍜",
@@ -29,7 +29,7 @@ if "categoria_activa" not in st.session_state:
 if "vista_actual" not in st.session_state:
     st.session_state["vista_actual"] = "menu_categorias"
 
-# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES (Fijado a pag1.jpeg)
+# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES
 if "fondo_seleccionado" not in st.session_state:
     st.session_state["fondo_seleccionado"] = "pag1.jpeg"
 
@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO (ACTUALIZADO Y COMPACTADO)
+# CSS MAESTRO (TOTALMENTE REPARADO Y RE-ALINEADO)
 # =========================================================
 st.markdown("""
 <style>
@@ -213,37 +213,35 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* REESTRUCTURACIÓN DE FILAS: ALINEACIÓN VERTICAL ULTRA PRECISA */
-div[data-testid="stHorizontalBlock"] {
-    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-    align-items: center !important; justify-content: space-between !important; width: 100% !important;
-}
-div[data-testid="stHorizontalBlock"] > div { 
-    min-width: 0 !important; 
-    display: flex !important;
+/* CONTENEDORES DE TEXTO SEGUROS (EVITAN DESBORDAMIENTOS) */
+.contenedor-fila-perfecta-col { 
+    display: flex !important; 
+    flex-direction: row !important; 
+    justify-content: space-between !important; 
     align-items: center !important; 
-    justify-content: center !important;
+    width: 100% !important; 
+    padding: 2px 0px;
 }
-div[data-testid="stHorizontalBlock"] > div:first-child {
-    justify-content: flex-start !important;
-    flex: 1 !important;
+.columna-izquierda-info { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    justify-content: center !important; 
+    flex: 1 !important; 
+    margin-right: 10px !important; 
 }
-
-.contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
-.columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
 .texto-nombre-plato { 
     color: #FFFFFF !important; 
-    font-size: 17px !important; 
-    font-weight: 900 !important; 
-    line-height: 1.3 !important; 
-    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
+    font-size: 16px !important; 
+    font-weight: bold !important; 
+    line-height: 1.2 !important; 
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important; 
 }
 .texto-descripcion-plato { 
     color: #FFFFFF !important; 
-    font-size: 13.5px !important; 
+    font-size: 13px !important; 
     font-style: italic !important; 
-    margin-top: 2px; 
+    margin-top: 1px; 
     display: block; 
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
     line-height: 1.2; 
@@ -251,66 +249,51 @@ div[data-testid="stHorizontalBlock"] > div:first-child {
 .texto-precio-plato { 
     color: #FFEB3B !important; 
     font-size: 16px !important; 
-    font-weight: 900 !important; 
-    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
+    font-weight: bold !important; 
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
     white-space: nowrap !important; 
-    margin-right: 2px;
 }
 
-/* CAMBIO RADICAL: SELECTOR DE MÁXIMA PRIORIDAD PARA MODO CLARO E INMUNE A STREAMLIT */
-div[data-testid="stHorizontalBlock"] button[id^="b"] {
-    background-color: #700000 !important; /* Rojo Oscuro / Vino fijo */
-    color: #FFFFFF !important; /* Signo "+" Blanco puro fijo */
-    font-size: 12px !important; 
+/* BOTÓN PERFECTAMENTE CONTROLADO SÓLO EN SU COLUMNA CORRESPONDIENTE */
+div[data-testid="stColumn"] button[id^="b"] {
+    background-color: #700000 !important; /* Fondo Vino Fijo e inmune al modo claro */
+    color: #FFFFFF !important; /* Símbolo + Blanco Puro */
+    font-size: 14px !important; 
     font-weight: 900 !important;
-    border-radius: 4px !important; 
-    width: 18px !important; 
-    height: 18px !important; /* Reducido al tamaño ideal para centrarse perfectamente */
-    min-width: 18px !important; 
-    max-width: 18px !important;
-    min-height: 18px !important;
-    max-height: 18px !important;
+    border-radius: 6px !important; 
+    width: 26px !important; 
+    height: 26px !important; 
+    min-width: 26px !important; 
+    max-width: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
     padding: 0px !important; 
-    margin: 0px !important;
-    display: inline-flex !important; 
+    margin: 4px auto 0px auto !important; /* Centrado y bajado levemente para nivelarse */
+    display: flex !important; 
     align-items: center !important; 
     justify-content: center !important;
-    border: 1px solid #FFEB3B !important; /* Borde amarillo para separar del fondo rojo */
-    box-shadow: 0px 1px 3px rgba(0,0,0,0.4) !important;
+    border: 1px solid #FFEB3B !important; /* Borde sutil amarillo */
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.5) !important;
     line-height: 1 !important;
 }
 
-/* Forzamos el mismo comportamiento en cualquier estado táctil en teléfonos móvil */
-div[data-testid="stHorizontalBlock"] button[id^="b"]:hover, 
-div[data-testid="stHorizontalBlock"] button[id^="b"]:focus, 
-div[data-testid="stHorizontalBlock"] button[id^="b"]:active {
+div[data-testid="stColumn"] button[id^="b"]:hover, 
+div[data-testid="stColumn"] button[id^="b"]:focus, 
+div[data-testid="stColumn"] button[id^="b"]:active {
     background-color: #700000 !important;
     color: #FFFFFF !important;
     border: 1px solid #FFEB3B !important;
-    box-shadow: none !important;
 }
 
 .divisor-plato { 
-    border-bottom: none !important; 
-    margin-bottom: 0px !important; 
-    padding-bottom: 0px !important; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; 
+    margin: 4px 0px !important; 
 }
 
-/* REDUCCIÓN DE ESPACIO VERTICAL */
+/* REDUCCIÓN EN MÓVILES */
 @media (max-width: 767px) {
-    [data-testid="stVerticalBlock"] {
-        gap: 0.15rem !important; 
-    }
-    div[data-testid="stHorizontalBlock"] {
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
-        margin-bottom: -6px !important; 
-    }
-}
-
-@media (min-width: 768px) {
-    [data-testid="stVerticalBlock"] { gap: 0.5rem !important; }
-    div[data-testid="stHorizontalBlock"] { padding-top: 3px !important; padding-bottom: 3px !important; }
+    [data-testid="stVerticalBlock"] { gap: 0.1rem !important; }
+    div[data-testid="stHorizontalBlock"] { margin-bottom: -2px !important; }
 }
 
 .titulo-categoria-chifa { color: #FFEB3B !important; font-size: 18px !important; font-weight: 900 !important; padding: 10px 8px !important; margin-top: 5px !important; margin-bottom: 10px !important; border-left: 5px solid #FFEB3B !important; background-color: rgba(0, 0, 0, 0.7) !important; border-radius: 0 8px 8px 0; text-shadow: 2px 2px 4px #000000 !important; }
@@ -344,7 +327,8 @@ with tab_menu:
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
-        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
+        # Volvemos a una distribución segura (85% para contenido, 15% para el botón plano)
+        col_izq, col_der = st.columns([0.85, 0.15])
         with col_izq:
             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
         with col_der:
@@ -391,7 +375,7 @@ with tab_carta:
                     
                     for idx, row in df_aleatorio.iterrows():
                         plato_dict = {"ID": row["ID"], "Name": row["Name"], "Price": row["Price"]}
-                        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
+                        col_izq, col_der = st.columns([0.85, 0.15])
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]} <small style="color:#FFEB3B; font-size:9px;">({row["Category"]})</small></span></div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
@@ -407,7 +391,7 @@ with tab_carta:
                         if cat_seleccionada == "COMBOS" and str(row["Description"]).strip():
                             desc_html = f'<span class="texto-descripcion-plato">✨ {row["Description"]}</span>'
                         
-                        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
+                        col_izq, col_der = st.columns([0.85, 0.15])
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]}</span>{desc_html}</div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
