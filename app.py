@@ -404,21 +404,46 @@ tab_menu, tab_carta, tab_pedido = st.tabs([
     f"🛒 Mi Pedido ({items_en_carrito})"
 ])
 # PESTAÑA: MENÚ DEL DÍA
+# PESTAÑA: MENÚ DEL DÍA
 with tab_menu:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
 
     if not menu_activo:
         st.warning("⏰ El Menú del Día solo está disponible de 11:00 AM a 4:30 PM.")
     else:
-    st.markdown('<div class="titulo-categoria-chifa">🍱 Menú chifa del día</div>', unsafe_allow_html=True)
-    
-    for plato in PLATOS_MENU_INTERNO:
-        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
-        with col_izq:
-            st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
-        with col_der:
-            st.button("＋", key=f"btn_menu_{plato['ID']}", on_click=click_agregar_plato, args=(plato, "Menú del Día", "MENÚ"))
-        st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="titulo-categoria-chifa">🍱 Menú chifa del día</div>',
+            unsafe_allow_html=True
+        )
+
+        for plato in PLATOS_MENU_INTERNO:
+            col_izq, col_der = st.columns([0.86, 0.14], gap="small")
+
+            with col_izq:
+                st.markdown(
+                    f"""
+                    <div class="contenedor-fila-perfecta-col">
+                        <div class="columna-izquierda-info">
+                            <span class="texto-nombre-plato">{plato["Name"]}</span>
+                        </div>
+                        <span class="texto-precio-plato">
+                            S/. {plato["Price"]:.2f}
+                        </span>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            with col_der:
+                st.button(
+                    "＋",
+                    key=f"btn_menu_{plato['ID']}",
+                    on_click=click_agregar_plato,
+                    args=(plato, "Menú del Día", "MENÚ")
+                )
+
+            st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # PESTAÑA: PLATOS A LA CARTA
