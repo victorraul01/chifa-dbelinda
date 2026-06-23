@@ -194,9 +194,10 @@ div[data-testid="stTabs"] { margin-top: 95px !important; }
 div[data-testid="stTabs"] > div:first-child { background-color: transparent !important; padding: 4px 10px !important; border-bottom: 2px solid #FFEB3B !important; }
 div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px !important; font-weight: bold !important; text-shadow: 2px 2px 3px #000000 !important; }
 
-/* CONTENEDOR DE LA PESTAÑA CON MARGEN INFERIOR PARA EVITAR EL MANAGE APP */
+/* MODIFICACIÓN: MARGEN INFERIOR FORZADO AL CONTENEDOR PARA DESPLAZAR EL MANAGE APP */
 .contenedor-seccion-platos {
-    padding: 10px 5px 80px 5px !important; /* Añadidos 80px abajo para dar el aire necesario */
+    padding: 10px 5px 0px 5px !important;
+    margin-bottom: 120px !important; /* Fuerza un espacio en blanco gigante al final de la lista */
 }
 
 div.lista-categorias-vertical div.stButton > button {
@@ -222,15 +223,16 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
 .columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
+/* MODIFICACIÓN: TAMAÑOS DE TEXTO LIGERAMENTE MÁS GRANDES */
 .texto-nombre-plato { 
     color: #FFFFFF !important; 
-    font-size: 17px !important; 
+    font-size: 19px !important; /* Aumentado de 17px a 19px */
     font-weight: 900 !important; 
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
 }
 .texto-descripcion-plato { 
     color: #FFFFFF !important; 
-    font-size: 12.5px !important; 
+    font-size: 13.5px !important; 
     font-style: italic !important; 
     margin-top: 2px; 
     display: block; 
@@ -239,17 +241,16 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 }
 .texto-precio-plato { 
     color: #FFEB3B !important; 
-    font-size: 16px !important; 
+    font-size: 18px !important; /* Aumentado de 16px a 18px */
     font-weight: 900 !important; 
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
     white-space: nowrap !important; 
     margin-right: 2px;
 }
 
-/* MODIFICACIÓN: BOTÓN ＋ REDUCIDO Y SEPARADO VERTICALMENTE */
 div.btn-mas-nativo div.stButton > button {
     background-color: #FFEB3B !important; color: #8B0000 !important; 
-    font-size: 14px !important; /* Más pequeño */
+    font-size: 14px !important; 
     font-weight: 900 !important;
     border-radius: 6px !important; 
     width: 28px !important; height: 28px !important; 
@@ -257,7 +258,7 @@ div.btn-mas-nativo div.stButton > button {
     padding: 0px !important; display: inline-flex !important; 
     align-items: center !important; justify-content: center !important;
     border: none !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important;
-    margin: 3px 0px !important; /* Margen para evitar que choquen entre sí */
+    margin: 3px 0px !important; 
 }
 
 .divisor-plato { 
@@ -274,7 +275,7 @@ div.btn-mas-nativo div.stButton > button {
     div[data-testid="stHorizontalBlock"] {
         padding-top: 0px !important;
         padding-bottom: 0px !important;
-        margin-bottom: -6px !important; /* Ajustado ligeramente por el nuevo margen del botón */
+        margin-bottom: -6px !important; 
     }
 }
 
