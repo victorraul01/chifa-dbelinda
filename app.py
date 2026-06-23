@@ -529,7 +529,7 @@ with tab_pedido:
                 if item.get('notas'):  mensaje_wa += f"   ↳ Obs: {item['notas']}\n"
 
             mensaje_wa += f"-------------------------\n💰 TOTAL: S/. {total:.2f}"
-            link_final = f"https://wa.me/51923860158?text={urllib.parse.quote(mensaje_wa)}"
+            link_final = f"https://wa.me/51933437275?text={urllib.parse.quote(mensaje_wa)}"
             st.markdown(f'<a href="{link_final}" target="_blank" class="enlace-wa-directo-siempre">💬 ENVIAR PEDIDO A WHATSAPP</a>', unsafe_allow_html=True)
         else:
             st.markdown('<a href="#" onclick="return false;" style="background-color: #cccccc !important; color: #666666 !important; cursor: not-allowed;" class="enlace-wa-directo-siempre">💬 COMPLETE SUS DATOS ARRIBA</a>', unsafe_allow_html=True)
