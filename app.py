@@ -194,10 +194,9 @@ div[data-testid="stTabs"] { margin-top: 95px !important; }
 div[data-testid="stTabs"] > div:first-child { background-color: transparent !important; padding: 4px 10px !important; border-bottom: 2px solid #FFEB3B !important; }
 div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px !important; font-weight: bold !important; text-shadow: 2px 2px 3px #000000 !important; }
 
-/* MODIFICACIÓN: MARGEN INFERIOR FORZADO AL CONTENEDOR PARA DESPLAZAR EL MANAGE APP */
 .contenedor-seccion-platos {
     padding: 10px 5px 0px 5px !important;
-    margin-bottom: 120px !important; /* Fuerza un espacio en blanco gigante al final de la lista */
+    margin-bottom: 120px !important;
 }
 
 div.lista-categorias-vertical div.stButton > button {
@@ -223,11 +222,12 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
 .columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
-/* MODIFICACIÓN: TAMAÑOS DE TEXTO LIGERAMENTE MÁS GRANDES */
+/* MODIFICACIÓN: REGRESO A FUENTES ANTERIORES Y CONTROL DE LINE-HEIGHT */
 .texto-nombre-plato { 
     color: #FFFFFF !important; 
-    font-size: 19px !important; /* Aumentado de 17px a 19px */
+    font-size: 17px !important; /* Regresado a 17px */
     font-weight: 900 !important; 
+    line-height: 1.3 !important; /* Evita que los renglones se monten */
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
 }
 .texto-descripcion-plato { 
@@ -241,24 +241,36 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 }
 .texto-precio-plato { 
     color: #FFEB3B !important; 
-    font-size: 18px !important; /* Aumentado de 16px a 18px */
+    font-size: 16px !important; /* Regresado a 16px */
     font-weight: 900 !important; 
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
     white-space: nowrap !important; 
     margin-right: 2px;
 }
 
+/* MODIFICACIÓN: BOTÓN MÁS RESALTANTE (ROJO CON TEXTO BLANCO) Y REDUCIDO EN UN 10% */
 div.btn-mas-nativo div.stButton > button {
-    background-color: #FFEB3B !important; color: #8B0000 !important; 
-    font-size: 14px !important; 
+    background-color: #8B0000 !important; /* Fondo rojo oscuro/vino para destacar en modo claro */
+    color: #FFFFFF !important; /* Texto del signo "+" en blanco puro fijo */
+    font-size: 12px !important; /* Ajuste proporcional de fuente */
     font-weight: 900 !important;
-    border-radius: 6px !important; 
-    width: 28px !important; height: 28px !important; 
-    min-width: 28px !important; max-width: 28px !important;
+    border-radius: 5px !important; 
+    width: 25px !important; height: 25px !important; /* Reducido un 10% (de 28px a 25px) */
+    min-width: 25px !important; max-width: 25px !important;
     padding: 0px !important; display: inline-flex !important; 
     align-items: center !important; justify-content: center !important;
-    border: none !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important;
+    border: 1px solid #FFEB3B !important; /* Borde amarillo para rematar el contraste */
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important;
     margin: 3px 0px !important; 
+}
+
+/* Control para hover/focus en móviles para mantener colores consistentes */
+div.btn-mas-nativo div.stButton > button:hover, 
+div.btn-mas-nativo div.stButton > button:focus, 
+div.btn-mas-nativo div.stButton > button:active {
+    background-color: #8B0000 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #FFEB3B !important;
 }
 
 .divisor-plato { 
@@ -315,7 +327,7 @@ with tab_menu:
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
-        col_izq, col_der = st.columns([0.83, 0.17], gap="small")
+        col_izq, col_der = st.columns([0.85, 0.15], gap="small")
         with col_izq:
             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
         with col_der:
@@ -364,7 +376,7 @@ with tab_carta:
                     
                     for idx, row in df_aleatorio.iterrows():
                         plato_dict = {"ID": row["ID"], "Name": row["Name"], "Price": row["Price"]}
-                        col_izq, col_der = st.columns([0.83, 0.17], gap="small")
+                        col_izq, col_der = st.columns([0.85, 0.15], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]} <small style="color:#FFEB3B; font-size:9px;">({row["Category"]})</small></span></div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
@@ -382,7 +394,7 @@ with tab_carta:
                         if cat_seleccionada == "COMBOS" and str(row["Description"]).strip():
                             desc_html = f'<span class="texto-descripcion-plato">✨ {row["Description"]}</span>'
                         
-                        col_izq, col_der = st.columns([0.83, 0.17], gap="small")
+                        col_izq, col_der = st.columns([0.85, 0.15], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]}</span>{desc_html}</div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
