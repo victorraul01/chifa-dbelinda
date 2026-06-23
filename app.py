@@ -207,20 +207,28 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 .contenedor-seccion-platos { padding: 10px 5px 0px 5px !important; margin-bottom: 40px !important; }
 
 /* ================================================================== */
-/* DISEÑO TOTALMENTE CONTROLADO POR HTML PARA LAS CATEGORÍAS */
+/* CONTENEDOR FLEX PARA EVITAR SUPERPOSICIÓN (MANTENIMIENTO DE DISTANCIA) */
 /* ================================================================== */
+.flex-contenedor-categorias {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important; /* Espacio exacto e inamovible entre botones */
+    width: 100% !important;
+    margin-top: 10px !important;
+}
+
 .tarjeta-categoria-link {
     display: block !important;
     background: rgba(0, 0, 0, 0.55) !important;
     background-color: rgba(0, 0, 0, 0.55) !important;
     border: 2px solid #FFEB3B !important;
     border-radius: 10px !important;
-    padding: 10px 14px !important; /* Relleno reducido para hacerlo más compacto */
-    margin-bottom: 10px !important; /* Ligera separación controlada entre botones */
+    padding: 10px 14px !important; /* Altura compacta */
     text-align: center !important;
     text-decoration: none !important;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.6) !important;
     transition: background 0.2s ease;
+    box-sizing: border-box !important;
 }
 
 .tarjeta-categoria-link:hover, .tarjeta-categoria-link:active {
@@ -230,7 +238,7 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 
 .texto-categoria-personalizado {
     color: #FFEB3B !important;
-    font-size: 16px !important; /* Ajustado ligeramente */
+    font-size: 16px !important;
     font-weight: 900 !important;
     font-family: sans-serif !important;
     letter-spacing: 0.5px !important;
@@ -296,7 +304,6 @@ tab_menu, tab_carta, tab_pedido = st.tabs(["🍱 Menú del Día", "📖 Platos a
 # PESTAÑA: MENÚ DEL DÍA
 with tab_menu:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
-    # TÍTULO CORREGIDO A MINÚSCULAS/TIPO ORACIÓN PARA EVITAR SALTO DE LÍNEA FANTASMA
     st.markdown('<div class="titulo-categoria-chifa">🍱 Menú chifa del día</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
@@ -318,17 +325,22 @@ with tab_carta:
             st.markdown('<p style="color: #FFEB3B; font-weight: bold; margin-bottom: 16px; font-size:16px; text-shadow: 1px 1px 2px black;">📖 Elige una sección de nuestra Carta:</p>', unsafe_allow_html=True)
             
             categorias_excel = sorted(list(df_carta["Category"].unique()))
-            todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
+            todas_categorias = ["✨ Recomendaciones del Día"] + \
+                categorias_excel
             
-            # CONTROL COMPLETO EN HTML - Botones compactos y elegantes sin forzar mayúsculas rígidas
+            # AGRUPACIÓN EN UN SOLO BLOQUE HTML USANDO FLEXBOX (Evita montado de elementos)
+            html_categorias = '<div class="flex-contenedor-categorias">'
             for cat in todas_categorias:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
                 url_destino = f"?cat={urllib.parse.quote(cat)}"
-                st.markdown(f"""
+                html_categorias += f"""
                     <a href="{url_destino}" target="_self" class="tarjeta-categoria-link">
                         <span class="texto-categoria-personalizado">{icono} {cat}</span>
                     </a>
-                """, unsafe_allow_html=True)
+                """
+            html_categorias += '</div>'
+            
+            st.markdown(html_categorias, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
         elif st.session_state["vista_actual"] == "ver_platos":
@@ -358,7 +370,6 @@ with tab_carta:
                             st.button("＋", key=f"btn_sug_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", row["Category"]))
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             else:
-                # Mostrar el nombre de la sección de la carta tal cual viene
                 st.markdown(f'<div class="titulo-categoria-chifa">📂 {cat_seleccionada.title()}</div>', unsafe_allow_html=True)
                 df_filtrado_cat = df_carta[df_carta["Category"] == cat_seleccionada]
                 if not df_filtrado_cat.empty:
