@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import urllib.parse
 import base64
 import os
 import time
@@ -13,13 +12,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Capturar navegación por URL (Evita problemas de caché en botones de categorías)
-query_params = st.query_params
-if "cat" in query_params:
-    st.session_state["categoria_activa"] = query_params["cat"]
-    st.session_state["vista_actual"] = "ver_platos"
-
-# 2. INICIALIZACIÓN DE ESTADOS
+# 2. INICIALIZACIÓN DE ESTADOS (Evitamos totalmente query_params)
 if "carrito" not in st.session_state:
     st.session_state["carrito"] = []
 
@@ -85,38 +78,14 @@ def cargar_catalogo_limpio():
 aplicar_fondo_stable()
 df_carta = cargar_catalogo_limpio()
 
-# 4. MENÚS Y CALLBACKS
-PLATOS_MENU_INTERNO = [
-    {"ID": "M01", "Name": "Chaufa de Pollo", "Price": 14.00},
-    {"ID": "M02", "Name": "Alita Rebozada", "Price": 15.00},
-    {"ID": "M03", "Name": "1/8 Broaster", "Price": 14.00},
-    {"ID": "M04", "Name": "Aeropuerto de Pollo", "Price": 17.00},
-    {"ID": "M05", "Name": "Combinado de Pollo", "Price": 17.00},
-    {"ID": "M06", "Name": "Pollo con Verdura", "Price": 17.00},
-    {"ID": "M07", "Name": "Tallarín Saltado de Pollo", "Price": 17.00},
-    {"ID": "M08", "Name": "Pollo con Tamarindo", "Price": 17.00},
-    {"ID": "M09", "Name": "Alita con Tamarindo", "Price": 17.00},
-    {"ID": "M10", "Name": "Lomo Saltado de Pollo", "Price": 17.00},
-    {"ID": "M11", "Name": "Alitas 4 Pzs", "Price": 18.00},
-    {"ID": "M12", "Name": "Tortilla de Verdura", "Price": 19.00},
-    {"ID": "M13", "Name": "Alitas con Piña", "Price": 18.00},
-    {"ID": "M14", "Name": "Pollo con Piña", "Price": 19.00},
-    {"ID": "M15", "Name": "Chaufa de Chancho", "Price": 20.00},
-    {"ID": "M16", "Name": "Chaufa de Res", "Price": 20.00},
-    {"ID": "M17", "Name": "Chaufa de Molleja", "Price": 20.00},
-    {"ID": "M18", "Name": "Chicharrón de Pollo", "Price": 20.00},
-    {"ID": "M19", "Name": "Chi Jau Kay", "Price": 20.00},
-    {"ID": "M20", "Name": "Kam Lu Wantan", "Price": 20.00},
-    {"ID": "M21", "Name": "Enrollado de Pollo", "Price": 20.00},
-    {"ID": "M22", "Name": "Tipa Kay", "Price": 20.00},
-    {"ID": "M23", "Name": "Tallarín de Res", "Price": 20.00},
-    {"ID": "M24", "Name": "Combinado de Res", "Price": 20.00},
-    {"ID": "M25", "Name": "Chancho con Piña", "Price": 20.00},
-    {"ID": "M26", "Name": "Chancho con Tamarindo", "Price": 20.00},
-    {"ID": "M27", "Name": "¼ Broaster", "Price": 22.00},
-    {"ID": "M28", "Name": "Alitas a la BBQ (3 piezas)", "Price": 18.00},
-    {"ID": "M29", "Name": "Alitas Acevichadas (3 piezas)", "Price": 18.00}
-]
+# 4. CALLBACKS DE NAVEGACIÓN CORREGIDOS (Sin reinicios de página)
+def ir_a_categoria(nombre_cat):
+    st.session_state["categoria_activa"] = nombre_cat
+    st.session_state["vista_actual"] = "ver_platos"
+
+def regresar_a_categorias():
+    st.session_state["categoria_activa"] = None
+    st.session_state["vista_actual"] = "menu_categorias"
 
 def click_agregar_plato(plato_info, origen, categoria):
     st.session_state["modal_plato_info"] = plato_info
@@ -124,18 +93,11 @@ def click_agregar_plato(plato_info, origen, categoria):
     st.session_state["modal_categoria"] = categoria
     st.session_state["mostrar_modal"] = True
 
-def regresar_a_categorias():
-    st.query_params.clear()
-    st.session_state["categoria_activa"] = None
-    st.session_state["vista_actual"] = "menu_categorias"
-    st.rerun()
-
 def eliminar_del_carrito(uid):
     st.session_state.carrito = [item for item in st.session_state.carrito if item["uid"] != uid]
-    st.rerun()
 
 # =========================================================
-# MODAL DE CONFIGURACIÓN DIALOG
+# MODAL DIALOG
 # =========================================================
 @st.dialog("Configura tu Plato 🍜")
 def abrir_modal_dinamico():
@@ -178,11 +140,10 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO INYECTADO (Elimina capas fantasmas)
+# CSS MAESTRO INYECTADO
 # =========================================================
 st.markdown("""
 <style>
-/* Ocultar barra Manage App */
 div[data-testid="stManageAppButton"], [data-testid="stManageAppButton"], .stDeployButton {
     display: none !important;
     visibility: hidden !important;
@@ -206,45 +167,31 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 
 .contenedor-seccion-platos { padding: 10px 5px 0px 5px !important; margin-bottom: 40px !important; }
 
-/* ================================================================== */
-/* CONTENEDOR FLEX PARA EVITAR SUPERPOSICIÓN (MANTENIMIENTO DE DISTANCIA) */
-/* ================================================================== */
-.flex-contenedor-categorias {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important; /* Espacio exacto e inamovible entre botones */
-    width: 100% !important;
-    margin-top: 10px !important;
-}
-
-.tarjeta-categoria-link {
+/* RE-ESTILIZACIÓN DE BOTONES NATIVOS DE CATEGORÍA PARA QUE SEAN SEPARADOS E INAMOVIBLES */
+div.contenedor-categoria-limpio div.stButton > button {
     display: block !important;
     background: rgba(0, 0, 0, 0.55) !important;
-    background-color: rgba(0, 0, 0, 0.55) !important;
+    color: #FFEB3B !important;
     border: 2px solid #FFEB3B !important;
     border-radius: 10px !important;
-    padding: 10px 14px !important; /* Altura compacta */
-    text-align: center !important;
-    text-decoration: none !important;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.6) !important;
-    transition: background 0.2s ease;
-    box-sizing: border-box !important;
-}
-
-.tarjeta-categoria-link:hover, .tarjeta-categoria-link:active {
-    background: rgba(0, 0, 0, 0.85) !important;
-    border-color: #FFFFFF !important;
-}
-
-.texto-categoria-personalizado {
-    color: #FFEB3B !important;
+    padding: 14px 10px !important;
+    width: 100% !important;
+    height: auto !important;
     font-size: 16px !important;
     font-weight: 900 !important;
     font-family: sans-serif !important;
-    letter-spacing: 0.5px !important;
     text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000 !important;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.6) !important;
+    margin-bottom: 12px !important; /* Espacio obligatorio garantizado */
 }
-/* ================================================================== */
+
+div.contenedor-categoria-limpio div.stButton > button:hover, 
+div.contenedor-categoria-limpio div.stButton > button:active,
+div.contenedor-categoria-limpio div.stButton > button:focus {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-color: #FFFFFF !important;
+    color: #FFEB3B !important;
+}
 
 div.boton-retroceder-contenedor div.stButton > button {
     background-color: #8B0000 !important; color: #FFFFFF !important; border: 1px solid #FFEB3B !important;
@@ -298,6 +245,38 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+PLATOS_MENU_INTERNO = [
+    {"ID": "M01", "Name": "Chaufa de Pollo", "Price": 14.00},
+    {"ID": "M02", "Name": "Alita Rebozada", "Price": 15.00},
+    {"ID": "M03", "Name": "1/8 Broaster", "Price": 14.00},
+    {"ID": "M04", "Name": "Aeropuerto de Pollo", "Price": 17.00},
+    {"ID": "M05", "Name": "Combinado de Pollo", "Price": 17.00},
+    {"ID": "M06", "Name": "Pollo con Verdura", "Price": 17.00},
+    {"ID": "M07", "Name": "Tallarín Saltado de Pollo", "Price": 17.00},
+    {"ID": "M08", "Name": "Pollo con Tamarindo", "Price": 17.00},
+    {"ID": "M09", "Name": "Alita con Tamarindo", "Price": 17.00},
+    {"ID": "M10", "Name": "Lomo Saltado de Pollo", "Price": 17.00},
+    {"ID": "M11", "Name": "Alitas 4 Pzs", "Price": 18.00},
+    {"ID": "M12", "Name": "Tortilla de Verdura", "Price": 19.00},
+    {"ID": "M13", "Name": "Alitas con Piña", "Price": 18.00},
+    {"ID": "M14", "Name": "Pollo con Piña", "Price": 19.00},
+    {"ID": "M15", "Name": "Chaufa de Chancho", "Price": 20.00},
+    {"ID": "M16", "Name": "Chaufa de Res", "Price": 20.00},
+    {"ID": "M17", "Name": "Chaufa de Molleja", "Price": 20.00},
+    {"ID": "M18", "Name": "Chicharrón de Pollo", "Price": 20.00},
+    {"ID": "M19", "Name": "Chi Jau Kay", "Price": 20.00},
+    {"ID": "M20", "Name": "Kam Lu Wantan", "Price": 20.00},
+    {"ID": "M21", "Name": "Enrollado de Pollo", "Price": 20.00},
+    {"ID": "M22", "Name": "Tipa Kay", "Price": 20.00},
+    {"ID": "M23", "Name": "Tallarín de Res", "Price": 20.00},
+    {"ID": "M24", "Name": "Combinado de Res", "Price": 20.00},
+    {"ID": "M25", "Name": "Chancho con Piña", "Price": 20.00},
+    {"ID": "M26", "Name": "Chancho con Tamarindo", "Price": 20.00},
+    {"ID": "M27", "Name": "¼ Broaster", "Price": 22.00},
+    {"ID": "M28", "Name": "Alitas a la BBQ (3 piezas)", "Price": 18.00},
+    {"ID": "M29", "Name": "Alitas Acevichadas (3 piezas)", "Price": 18.00}
+]
+
 items_en_carrito = sum(item["cant"] for item in st.session_state.carrito)
 tab_menu, tab_carta, tab_pedido = st.tabs(["🍱 Menú del Día", "📖 Platos a la Carta", f"🛒 Mi Pedido ({items_en_carrito})"])
 
@@ -325,26 +304,18 @@ with tab_carta:
             st.markdown('<p style="color: #FFEB3B; font-weight: bold; margin-bottom: 16px; font-size:16px; text-shadow: 1px 1px 2px black;">📖 Elige una sección de nuestra Carta:</p>', unsafe_allow_html=True)
             
             categorias_excel = sorted(list(df_carta["Category"].unique()))
-            todas_categorias = ["✨ Recomendaciones del Día"] + \
-                categorias_excel
+            todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
             
-            # AGRUPACIÓN EN UN SOLO BLOQUE HTML USANDO FLEXBOX (Evita montado de elementos)
-            html_categorias = '<div class="flex-contenedor-categorias">'
+            # Botones nativos controlados de forma limpia sin recargar la URL de la página
+            st.markdown('<div class="contenedor-categoria-limpio">', unsafe_allow_html=True)
             for cat in todas_categorias:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
-                url_destino = f"?cat={urllib.parse.quote(cat)}"
-                html_categorias += f"""
-                    <a href="{url_destino}" target="_self" class="tarjeta-categoria-link">
-                        <span class="texto-categoria-personalizado">{icono} {cat}</span>
-                    </a>
-                """
-            html_categorias += '</div>'
-            
-            st.markdown(html_categorias, unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.button(f"{icono} {cat}", key=f"cat_btn_{cat}", on_click=ir_a_categoria, args=(cat,))
+            st.markdown('</div></div>', unsafe_allow_html=True)
             
         elif st.session_state["vista_actual"] == "ver_platos":
             cat_seleccionada = st.session_state["categoria_activa"]
+            
             st.markdown('<div class="boton-retroceder-contenedor">', unsafe_allow_html=True)
             st.button("⬅️ Volver a Categorías", on_click=regresar_a_categorias)
             st.markdown('</div>', unsafe_allow_html=True)
@@ -402,7 +373,7 @@ with tab_pedido:
             detalles_lista = [f"📌 {item.get('tipo','Carta')}"]
             if item.get("entrada"): detalles_lista.append(f"🍲 {item['entrada']}")
             if item.get('cremas'): detalles_lista.append(f"🧂 {item['cremas']}")
-            if item.get('notas'): detalles_lista.append(f"📝 {item['notas']}")
+            if item.get('notas'):  detalles_lista.append(f"📝 {item['notas']}")
 
             st.markdown('<div class="fila-carrito-ordenada">', unsafe_allow_html=True)
             col_tacho, col_info = st.columns([0.12, 0.88])
