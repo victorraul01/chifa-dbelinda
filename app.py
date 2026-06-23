@@ -170,9 +170,9 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 /* RE-ESTILIZACIÓN DE BOTONES NATIVOS DE CATEGORÍA PARA QUE SEAN SEPARADOS E INAMOVIBLES */
 div.contenedor-categoria-limpio div.stButton > button {
     display: block !important;
-    background: rgba(0, 0, 0, 0.55) !important;
-    color: #FFEB3B !important;
-    border: 2px solid #FFEB3B !important;
+    background: #F5F5F5 !important;
+    color: #000000 !important;
+    border: 2px solid #D9D9D9 !important;
     border-radius: 10px !important;
     padding: 14px 10px !important;
     width: 100% !important;
@@ -180,23 +180,29 @@ div.contenedor-categoria-limpio div.stButton > button {
     font-size: 16px !important;
     font-weight: 900 !important;
     font-family: sans-serif !important;
-    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000 !important;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.6) !important;
-    margin-bottom: 12px !important; /* Espacio obligatorio garantizado */
+    text-shadow: none !important;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2) !important;
+    margin-bottom: 12px !important;
 }
 
 div.contenedor-categoria-limpio div.stButton > button:hover, 
 div.contenedor-categoria-limpio div.stButton > button:active,
 div.contenedor-categoria-limpio div.stButton > button:focus {
-    background: rgba(0, 0, 0, 0.85) !important;
-    border-color: #FFFFFF !important;
-    color: #FFEB3B !important;
+    background: #E0E0E0 !important;
+    border-color: #BDBDBD !important;
+    color: #000000 !important;
 }
 
 div.boton-retroceder-contenedor div.stButton > button {
-    background-color: #8B0000 !important; color: #FFFFFF !important; border: 1px solid #FFEB3B !important;
-    padding: 8px 15px !important; font-size: 14px !important; font-weight: bold !important;
-    border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
+    background-color: #F5F5F5 !important;
+    color: #000000 !important;
+    border: 1px solid #BDBDBD !important;
+    padding: 8px 15px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+    width: auto !important;
+    margin-bottom: 15px !important;
 }
 
 div[data-testid="stHorizontalBlock"] { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; }
@@ -234,6 +240,25 @@ div.boton-tacho-contenedor div.stButton > button { background-color: #FFEB3B !im
 .enlace-wa-directo-siempre { display: block !important; background-color: #25D366 !important; color: white !important; text-align: center !important; font-weight: bold !important; font-size: 16px !important; padding: 14px 20px !important; border-radius: 8px !important; text-decoration: none !important; box-shadow: 0px 5px 10px rgba(0,0,0,0.4) !important; margin: 18px 0px !important; border: 1px solid #ffffff !important; }
 .alerta-delivery-destacada { background-color: rgba(0, 0, 0, 0.75) !important; border: 2px solid #FFEB3B !important; padding: 15px !important; border-radius: 10px !important; color: #FFFFFF !important; margin-bottom: 15px; }
 .recuadro-total-final { background-color: rgba(0, 0, 0, 0.5) !important; border: 1px solid #FFEB3B !important; border-radius: 8px !important; padding: 12px 15px !important; margin: 20px 0px !important; display: flex !important; justify-content: space-between !important; }
+/* Inputs nombre y dirección */
+div[data-testid="stTextInput"] input {
+    background-color: #F5F5F5 !important;
+    color: #000000 !important;
+    border: 1px solid #BDBDBD !important;
+    border-radius: 8px !important;
+}
+
+/* Placeholder */
+div[data-testid="stTextInput"] input::placeholder {
+    color: #000000 !important;
+    opacity: 0.7 !important;
+}
+
+/* Labels de los inputs */
+div[data-testid="stTextInput"] label {
+    color: #FFFFFF !important;
+    font-weight: bold !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
