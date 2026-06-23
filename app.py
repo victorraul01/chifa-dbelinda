@@ -167,15 +167,15 @@ def abrir_modal_dinamico():
         if mostrar_limon and c_limon: cremas_list.append("Limón")
         
         nuevo_item = {
-            "uid": time.time() + random.random(), "id": p_info["ID"], "nombre": p_info["Name"], "precio": float(p_info["Price"]),
-            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notes.strip(), "tipo": p_orig, "entrada": entrada_sel
+            "uid": time.time() + random.sample(range(100), 1)[0], "id": p_info["ID"], "nombre": p_info["Name"], "precio": float(p_info["Price"]),
+            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notas.strip(), "tipo": p_orig, "entrada": entrada_sel
         }
         st.session_state["carrito"].append(nuevo_item)
         st.session_state["mostrar_modal"] = False
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO - REPOSICIONAMIENTO DE LÍNEA Y BORDES SEGUROS
+# CSS MAESTRO - SIN LÍNEAS AMARILLAS ABAJO
 # =========================================================
 st.markdown("""
 <style>
@@ -304,13 +304,12 @@ div[data-testid="stHorizontalBlock"] div.stButton > button:active {
     box-shadow: 0px 1px 2px rgba(0,0,0,0.5) !important;
 }
 
-/* AJUSTE Y REPOSICIÓN DE LA LÍNEA AMARILLA INTERMEDIA */
+/* ELIMINACIÓN DE LA LÍNEA VISUAL AMARILLA (Manteniendo espacio estructural) */
 .divisor-plato { 
-    border-bottom: 2px solid #FFEB3B !important; 
-    margin-top: 15px !important;     /* Corre la línea más abajo del texto */
-    margin-bottom: 15px !important;  /* Separa limpiamente el bloque del siguiente plato */
+    border-bottom: none !important;  /* Línea amarilla removida por completo */
+    margin-top: 15px !important;     
+    margin-bottom: 15px !important;  
     padding-bottom: 0px !important; 
-    opacity: 0.85;
     clear: both;
 }
 
@@ -448,7 +447,7 @@ with tab_pedido:
             detalles_lista = [f"📌 {item.get('tipo','Carta')}"]
             if item.get("entrada"): detalles_lista.append(f"🍲 {item['entrada']}")
             if item.get('cremas'): detalles_lista.append(f"🧂 {item['cremas']}")
-            if item.get('notes'): detalles_lista.append(f"📝 {item['notes']}")
+            if item.get('notas'): detalles_lista.append(f"📝 {item['notas']}")
 
             st.markdown('<div class="fila-carrito-ordenada">', unsafe_allow_html=True)
             col_tacho, col_info = st.columns([0.12, 0.88])
