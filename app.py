@@ -168,19 +168,19 @@ def abrir_modal_dinamico():
         
         nuevo_item = {
             "uid": time.time() + random.random(), "id": p_info["ID"], "nombre": p_info["Name"], "precio": float(p_info["Price"]),
-            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notas.strip(), "tipo": p_orig, "entrada": entrada_sel
+            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notes.strip(), "tipo": p_orig, "entrada": entrada_sel
         }
         st.session_state["carrito"].append(nuevo_item)
         st.session_state["mostrar_modal"] = False
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO - ACTUALIZADO (ELIMINA MANAGE APP Y CORRIGE BORDE)
+# CSS MAESTRO - REPOSICIONAMIENTO DE LÍNEA Y BORDES SEGUROS
 # =========================================================
 st.markdown("""
 <style>
-/* 1. ELIMINACIÓN TOTAL DE LA BARRA 'MANAGE APP' DE STREAMLIT Y AJUSTE DE MARGEN INFERIOR */
-div[data-testid="stManageAppButton"] {
+/* 1. ELIMINACIÓN TOTAL DE LA BARRA 'MANAGE APP' DE STREAMLIT */
+div[data-testid="stManageAppButton"], [data-testid="stManageAppButton"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -196,11 +196,11 @@ html, body, [data-testid="stApp"] {
 /* Margen de seguridad abajo para que no se tape el último plato en ningún celular */
 [data-testid="stMainBlockContainer"] { 
     padding-top: 0px !important; 
-    padding-bottom: 120px !important; 
+    padding-bottom: 140px !important; 
 }
 .main .block-container { 
     padding-top: 0px !important; 
-    padding-bottom: 120px !important;
+    padding-bottom: 140px !important;
     max-width: 100% !important; 
 }
 
@@ -273,51 +273,45 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* 2. CONTROL DEL BOTÓN COMPACTO "＋" CON FORZADO DE BORDE ROJO EN MÓVILES */
-div.btn-mas-nativo {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-
-div.btn-mas-nativo div.stButton > button {
+/* DETECCIÓN GLOBAL DE LOS BOTONES "＋" DENTRO DE FILAS HORIZONTALES */
+div[data-testid="stHorizontalBlock"] div.stButton > button {
     background-color: #FFEB3B !important;
     color: #000000 !important;
-    font-size: 14px !important; 
-    font-weight: 900 !important;
-    border-radius: 5px !important; 
-    width: 28px !important; 
-    height: 28px !important; 
-    min-width: 28px !important; 
-    max-width: 28px !important;
-    padding: 0px !important; 
-    display: inline-flex !important; 
-    align-items: center !important; 
+    border: 2px solid #8B0000 !important; /* Borde rojo guinda grueso */
+    border-radius: 6px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    padding: 0px !important;
+    display: inline-flex !important;
+    align-items: center !important;
     justify-content: center !important;
-    
-    /* Reglas para obligar al navegador a renderizar el borde sólido */
+    font-weight: 900 !important;
+    font-size: 16px !important;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.5) !important;
     -webkit-appearance: none !important;
     box-sizing: border-box !important;
-    border: 2px solid #8B0000 !important; 
-    
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important; 
-    margin: 0px !important;
 }
 
-/* Forzar estados reactivos */
-div.btn-mas-nativo div.stButton > button:hover, 
-div.btn-mas-nativo div.stButton > button:focus, 
-div.btn-mas-nativo div.stButton > button:active {
+/* Forzar estados reactivos en pantallas táctiles y móviles */
+div[data-testid="stHorizontalBlock"] div.stButton > button:hover,
+div[data-testid="stHorizontalBlock"] div.stButton > button:focus,
+div[data-testid="stHorizontalBlock"] div.stButton > button:active {
     background-color: #FFEB3B !important;
     color: #000000 !important;
     border: 2px solid #8B0000 !important;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.5) !important;
 }
 
+/* AJUSTE Y REPOSICIÓN DE LA LÍNEA AMARILLA INTERMEDIA */
 .divisor-plato { 
-    border-bottom: none !important; 
-    margin-bottom: 0px !important; 
+    border-bottom: 2px solid #FFEB3B !important; 
+    margin-top: 15px !important;     /* Corre la línea más abajo del texto */
+    margin-bottom: 15px !important;  /* Separa limpiamente el bloque del siguiente plato */
     padding-bottom: 0px !important; 
+    opacity: 0.85;
+    clear: both;
 }
 
 /* REDUCCIÓN DE ESPACIO VERTICAL */
@@ -326,15 +320,15 @@ div.btn-mas-nativo div.stButton > button:active {
         gap: 0.15rem !important; 
     }
     div[data-testid="stHorizontalBlock"] {
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
-        margin-bottom: -6px !important; 
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-bottom: 0px !important; 
     }
 }
 
 @media (min-width: 768px) {
     [data-testid="stVerticalBlock"] { gap: 0.5rem !important; }
-    div[data-testid="stHorizontalBlock"] { padding-top: 3px !important; padding-bottom: 3px !important; }
+    div[data-testid="stHorizontalBlock"] { padding-top: 6px !important; padding-bottom: 6px !important; }
 }
 
 .titulo-categoria-chifa { color: #FFEB3B !important; font-size: 18px !important; font-weight: 900 !important; padding: 10px 8px !important; margin-top: 5px !important; margin-bottom: 10px !important; border-left: 5px solid #FFEB3B !important; background-color: rgba(0, 0, 0, 0.7) !important; border-radius: 0 8px 8px 0; text-shadow: 2px 2px 4px #000000 !important; }
@@ -372,9 +366,7 @@ with tab_menu:
         with col_izq:
             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
         with col_der:
-            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
             st.button("＋", key=f"btn_menu_{plato['ID']}", on_click=click_agregar_plato, args=(plato, "Menú del Día", "MENÚ"))
-            st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -421,9 +413,7 @@ with tab_carta:
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]} <small style="color:#FFEB3B; font-size:9px;">({row["Category"]})</small></span></div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
-                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_sug_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", row["Category"]))
-                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<div class="titulo-categoria-chifa">📂 {cat_seleccionada}</div>', unsafe_allow_html=True)
@@ -439,9 +429,7 @@ with tab_carta:
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]}</span>{desc_html}</div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
-                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_carta_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", cat_seleccionada))
-                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
