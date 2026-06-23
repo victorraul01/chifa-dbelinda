@@ -168,7 +168,7 @@ def abrir_modal_dinamico():
         
         nuevo_item = {
             "uid": time.time() + random.sample(range(100), 1)[0], "id": p_info["ID"], "nombre": p_info["Name"], "precio": float(p_info["Price"]),
-            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notas.strip(), "tipo": p_orig, "entrada": entrada_sel
+            "cant": int(cantidad), "cremas": ", ".join(cremas_list), "notas": notes.strip() if 'notes' in locals() else notas.strip(), "tipo": p_orig, "entrada": entrada_sel
         }
         st.session_state["carrito"].append(nuevo_item)
         st.session_state["mostrar_modal"] = False
@@ -221,34 +221,37 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
 }
 
 /* ================================================================== */
-/* CAMBIO EXCLUSIVO: BOTONES DE CATEGORÍAS EN LA PESTAÑA CARTA        */
+/* NUEVA REDEFINICIÓN EXTRA FUERTE: BOTONES SEMITRANSPARENTES + TEXTO AMARILLO BORDEADO */
 /* ================================================================== */
 div.lista-categorias-carta div[data-testid="stButton"] button {
-    background-color: #600000 !important; 
-    border: 1px solid rgba(255, 255, 255, 0.4) !important; 
+    background-color: rgba(0, 0, 0, 0.55) !important; 
+    background: rgba(0, 0, 0, 0.55) !important;
+    border: 2px solid #FFEB3B !important; 
     padding: 14px 18px !important;
-    border-radius: 10px !important; 
+    border-radius: 12px !important; 
     width: 100% !important;
-    margin-bottom: 10px !important; 
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.5) !important;
+    margin-bottom: 12px !important; 
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.7) !important;
 }
 
+/* Forzar Texto Amarillo con borde negro muy grueso */
 div.lista-categorias-carta div[data-testid="stButton"] button p,
-div.lista-categorias-carta div[data-testid="stButton"] button span {
-    color: #FFFFFF !important;
-    font-size: 16px !important; 
-    font-weight: bold !important;
-    text-shadow: none !important; 
+div.lista-categorias-carta div[data-testid="stButton"] button span,
+div.lista-categorias-carta div[data-testid="stButton"] button div {
+    color: #FFEB3B !important;
+    font-size: 17px !important; 
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000 !important;
+    -webkit-text-stroke: 0.5px black;
 }
 
+/* Hover / Touch */
 div.lista-categorias-carta div[data-testid="stButton"] button:hover,
 div.lista-categorias-carta div[data-testid="stButton"] button:focus,
 div.lista-categorias-carta div[data-testid="stButton"] button:active {
-    background-color: #7A0000 !important;
-    border: 1px solid #FFFFFF !important;
-}
-div.lista-categorias-carta div[data-testid="stButton"] button:hover p {
-    color: #FFFFFF !important;
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    border: 2px solid #FFFFFF !important;
 }
 /* ================================================================== */
 
@@ -297,7 +300,7 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* BOTONES DE AGREGAR MÁS (＋) - SIN CAMBIOS */
+/* BOTONES DE AGREGAR MÁS (＋) - ESTÉTICA ORIGINAL */
 div[data-testid="stHorizontalBlock"] div.stButton > button {
     background-color: #FFEB3B !important;
     color: #000000 !important;
@@ -397,7 +400,7 @@ with tab_carta:
             categorias_excel = sorted(list(df_carta["Category"].unique()))
             todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
             
-            # SE ENVUELVE EN LA NUEVA CLASE EXCLUSIVA PARA EVITAR BOTONES BLANCOS
+            # CONTENEDOR EXCLUSIVO QUE FUERZA LOS BOTONES SEMITRANSPARENTES OSCUROS
             st.markdown('<div class="lista-categorias-carta">', unsafe_allow_html=True)
             for cat in todas_categorias:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
