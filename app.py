@@ -213,7 +213,7 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* MODIFICACIÓN: ALINEACIÓN Y CONTROL ULTRA ESTRICTO DE COLUMNAS HORIZONTALES */
+/* ALINEACIÓN Y CONTROL ULTRA ESTRICTO DE COLUMNAS HORIZONTALES */
 div[data-testid="stHorizontalBlock"] {
     display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
     align-items: center !important; justify-content: space-between !important; width: 100% !important;
@@ -221,7 +221,7 @@ div[data-testid="stHorizontalBlock"] {
 div[data-testid="stHorizontalBlock"] > div { 
     min-width: 0 !important; 
     display: flex !important;
-    align-items: center !important; /* Centra el botón verticalmente respecto a la info */
+    align-items: center !important;
 }
 
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
@@ -247,12 +247,12 @@ div[data-testid="stHorizontalBlock"] > div {
     color: #FFEB3B !important; 
     font-size: 16px !important; 
     font-weight: 900 !important; 
-    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, -1.5px 1.5px 0 #000 !important;
     white-space: nowrap !important; 
     margin-right: 2px;
 }
 
-/* MODIFICACIÓN: CONTROL ABSOLUTO DEL BOTÓN COMPACTO "＋" INMUNE AL MODO CLARO */
+/* CONTROL ABSOLUTO DEL BOTÓN COMPACTO "＋" CON BORDE MEJORADO */
 div.btn-mas-nativo {
     display: flex !important;
     align-items: center !important;
@@ -266,14 +266,14 @@ div.btn-mas-nativo div.stButton > button {
     font-size: 13px !important; 
     font-weight: 900 !important;
     border-radius: 4px !important; 
-    width: 22px !important; height: 22px !important; /* Más pequeño para alinearse perfectamente */
-    min-width: 22px !important; max-width: 22px !important;
+    width: 24px !important; height: 24px !important; /* Ligeramente ajustado para encuadrar el borde */
+    min-width: 24px !important; max-width: 24px !important;
     padding: 0px !important; 
     display: inline-flex !important; 
     align-items: center !important; 
     justify-content: center !important;
-    border: none !important; 
-    box-shadow: 0px 1px 3px rgba(0,0,0,0.5) !important;
+    border: 2px solid #8B0000 !important; /* NUEVO: Borde Rojo Oscuro Grueso para Alta Visibilidad */
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important; /* Sombra más pronunciada */
     margin: 0px !important;
 }
 
@@ -283,8 +283,8 @@ div.btn-mas-nativo div.stButton > button:focus,
 div.btn-mas-nativo div.stButton > button:active {
     background-color: #FFEB3B !important;
     color: #000000 !important;
-    box-shadow: none !important;
-    border: none !important;
+    border: 2px solid #8B0000 !important;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.4) !important;
 }
 
 .divisor-plato { 
