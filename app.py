@@ -405,7 +405,6 @@ tab_menu, tab_carta, tab_pedido = st.tabs([
 ])
 # PESTAÑA: MENÚ DEL DÍA
 with tab_menu:
-    with tab_menu:
     st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
 
     if not menu_activo:
