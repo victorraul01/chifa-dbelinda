@@ -394,8 +394,8 @@ hora_actual = datetime.now().time()
 
 # Horario permitido (11:00 AM a 4:30 PM)
 menu_activo = (
-    hora_actual <=datetime.strptime("11:00", "%H:%M").time()
-    and hora_actual >=datetime.strptime("16:30", "%H:%M").time()
+    hora_actual =datetime.strptime("11:00", "%H:%M").time()
+    and hora_actual =datetime.strptime("16:30", "%H:%M").time()
 )
 
 tab_menu, tab_carta, tab_pedido = st.tabs([
