@@ -6,7 +6,7 @@ import os
 import time
 import random
 
-# 1. CONFIGURACIÓN DE LA PÁGINA
+# 1. CONFIGURACIÓN DE LA PÁGINA (Debe ser lo primero)
 st.set_page_config(
     page_title="Chifa D' Belinda",
     page_icon="🍜",
@@ -29,7 +29,7 @@ if "categoria_activa" not in st.session_state:
 if "vista_actual" not in st.session_state:
     st.session_state["vista_actual"] = "menu_categorias"
 
-# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES
+# 3. CONTROL DEL FONDO DISPOSITIVOS MÓVILES (Fijado a pag1.jpeg)
 if "fondo_seleccionado" not in st.session_state:
     st.session_state["fondo_seleccionado"] = "pag1.jpeg"
 
@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO (TOTALMENTE REPARADO Y RE-ALINEADO)
+# CSS MAESTRO
 # =========================================================
 st.markdown("""
 <style>
@@ -213,35 +213,32 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* CONTENEDORES DE TEXTO SEGUROS (EVITAN DESBORDAMIENTOS) */
-.contenedor-fila-perfecta-col { 
-    display: flex !important; 
-    flex-direction: row !important; 
-    justify-content: space-between !important; 
-    align-items: center !important; 
-    width: 100% !important; 
-    padding: 2px 0px;
+/* MODIFICACIÓN: ALINEACIÓN Y CONTROL ULTRA ESTRICTO DE COLUMNAS HORIZONTALES */
+div[data-testid="stHorizontalBlock"] {
+    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
+    align-items: center !important; justify-content: space-between !important; width: 100% !important;
 }
-.columna-izquierda-info { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    justify-content: center !important; 
-    flex: 1 !important; 
-    margin-right: 10px !important; 
+div[data-testid="stHorizontalBlock"] > div { 
+    min-width: 0 !important; 
+    display: flex !important;
+    align-items: center !important; /* Centra el botón verticalmente respecto a la info */
 }
+
+.contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
+.columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
 .texto-nombre-plato { 
     color: #FFFFFF !important; 
-    font-size: 16px !important; 
-    font-weight: bold !important; 
-    line-height: 1.2 !important; 
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important; 
+    font-size: 17px !important; 
+    font-weight: 900 !important; 
+    line-height: 1.3 !important; 
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
 }
 .texto-descripcion-plato { 
     color: #FFFFFF !important; 
-    font-size: 13px !important; 
+    font-size: 13.5px !important; 
     font-style: italic !important; 
-    margin-top: 1px; 
+    margin-top: 2px; 
     display: block; 
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
     line-height: 1.2; 
@@ -249,51 +246,68 @@ div.boton-retroceder-contenedor div.stButton > button {
 .texto-precio-plato { 
     color: #FFEB3B !important; 
     font-size: 16px !important; 
-    font-weight: bold !important; 
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000 !important;
+    font-weight: 900 !important; 
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
     white-space: nowrap !important; 
+    margin-right: 2px;
 }
 
-/* BOTÓN PERFECTAMENTE CONTROLADO SÓLO EN SU COLUMNA CORRESPONDIENTE */
-div[data-testid="stColumn"] button[id^="b"] {
-    background-color: #700000 !important; /* Fondo Vino Fijo e inmune al modo claro */
-    color: #FFFFFF !important; /* Símbolo + Blanco Puro */
-    font-size: 14px !important; 
+/* MODIFICACIÓN: CONTROL ABSOLUTO DEL BOTÓN COMPACTO "＋" INMUNE AL MODO CLARO */
+div.btn-mas-nativo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+div.btn-mas-nativo div.stButton > button {
+    background-color: #FFEB3B !important; /* Forzado Amarillo Puro */
+    color: #000000 !important; /* Signo "+" en Negro Absoluto */
+    font-size: 13px !important; 
     font-weight: 900 !important;
-    border-radius: 6px !important; 
-    width: 26px !important; 
-    height: 26px !important; 
-    min-width: 26px !important; 
-    max-width: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    border-radius: 4px !important; 
+    width: 22px !important; height: 22px !important; /* Más pequeño para alinearse perfectamente */
+    min-width: 22px !important; max-width: 22px !important;
     padding: 0px !important; 
-    margin: 4px auto 0px auto !important; /* Centrado y bajado levemente para nivelarse */
-    display: flex !important; 
+    display: inline-flex !important; 
     align-items: center !important; 
     justify-content: center !important;
-    border: 1px solid #FFEB3B !important; /* Borde sutil amarillo */
+    border: none !important; 
     box-shadow: 0px 1px 3px rgba(0,0,0,0.5) !important;
-    line-height: 1 !important;
+    margin: 0px !important;
 }
 
-div[data-testid="stColumn"] button[id^="b"]:hover, 
-div[data-testid="stColumn"] button[id^="b"]:focus, 
-div[data-testid="stColumn"] button[id^="b"]:active {
-    background-color: #700000 !important;
-    color: #FFFFFF !important;
-    border: 1px solid #FFEB3B !important;
+/* Sobrescribimos cualquier cambio de estado reactivo del navegador */
+div.btn-mas-nativo div.stButton > button:hover, 
+div.btn-mas-nativo div.stButton > button:focus, 
+div.btn-mas-nativo div.stButton > button:active {
+    background-color: #FFEB3B !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .divisor-plato { 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; 
-    margin: 4px 0px !important; 
+    border-bottom: none !important; 
+    margin-bottom: 0px !important; 
+    padding-bottom: 0px !important; 
 }
 
-/* REDUCCIÓN EN MÓVILES */
+/* REDUCCIÓN DE ESPACIO VERTICAL */
 @media (max-width: 767px) {
-    [data-testid="stVerticalBlock"] { gap: 0.1rem !important; }
-    div[data-testid="stHorizontalBlock"] { margin-bottom: -2px !important; }
+    [data-testid="stVerticalBlock"] {
+        gap: 0.15rem !important; 
+    }
+    div[data-testid="stHorizontalBlock"] {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        margin-bottom: -6px !important; 
+    }
+}
+
+@media (min-width: 768px) {
+    [data-testid="stVerticalBlock"] { gap: 0.5rem !important; }
+    div[data-testid="stHorizontalBlock"] { padding-top: 3px !important; padding-bottom: 3px !important; }
 }
 
 .titulo-categoria-chifa { color: #FFEB3B !important; font-size: 18px !important; font-weight: 900 !important; padding: 10px 8px !important; margin-top: 5px !important; margin-bottom: 10px !important; border-left: 5px solid #FFEB3B !important; background-color: rgba(0, 0, 0, 0.7) !important; border-radius: 0 8px 8px 0; text-shadow: 2px 2px 4px #000000 !important; }
@@ -327,12 +341,13 @@ with tab_menu:
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
-        # Volvemos a una distribución segura (85% para contenido, 15% para el botón plano)
-        col_izq, col_der = st.columns([0.85, 0.15])
+        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
         with col_izq:
             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
         with col_der:
+            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
             st.button("＋", key=f"btn_menu_{plato['ID']}", on_click=click_agregar_plato, args=(plato, "Menú del Día", "MENÚ"))
+            st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -375,11 +390,13 @@ with tab_carta:
                     
                     for idx, row in df_aleatorio.iterrows():
                         plato_dict = {"ID": row["ID"], "Name": row["Name"], "Price": row["Price"]}
-                        col_izq, col_der = st.columns([0.85, 0.15])
+                        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]} <small style="color:#FFEB3B; font-size:9px;">({row["Category"]})</small></span></div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
+                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_sug_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", row["Category"]))
+                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<div class="titulo-categoria-chifa">📂 {cat_seleccionada}</div>', unsafe_allow_html=True)
@@ -391,11 +408,13 @@ with tab_carta:
                         if cat_seleccionada == "COMBOS" and str(row["Description"]).strip():
                             desc_html = f'<span class="texto-descripcion-plato">✨ {row["Description"]}</span>'
                         
-                        col_izq, col_der = st.columns([0.85, 0.15])
+                        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]}</span>{desc_html}</div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
+                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_carta_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", cat_seleccionada))
+                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
