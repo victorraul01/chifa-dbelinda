@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO - SIN LÍNEAS AMARILLAS ABAJO
+# CSS MAESTRO - BOTONES DE CATEGORÍAS EN GUINDA Y BLANCO
 # =========================================================
 st.markdown("""
 <style>
@@ -220,12 +220,29 @@ div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px 
     margin-bottom: 40px !important;
 }
 
+/* NUEVO ESTILO: BOTONES DE CATEGORÍAS EN GUINDA OSCURO Y LETRAS BLANCAS */
 div.lista-categorias-vertical div.stButton > button {
-    background-color: rgba(0, 0, 0, 0.65) !important; color: #FFEB3B !important;
-    border: 1px solid rgba(255, 235, 59, 0.4) !important; padding: 14px 18px !important;
-    font-size: 15px !important; font-weight: bold !important; text-align: left !important;
-    justify-content: flex-start !important; border-radius: 10px !important; width: 100% !important;
-    margin-bottom: 8px !important; box-shadow: 0px 3px 6px rgba(0,0,0,0.3) !important;
+    background-color: #600000 !important; 
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+    padding: 14px 18px !important;
+    font-size: 16px !important; 
+    font-weight: bold !important; 
+    text-align: left !important;
+    justify-content: flex-start !important; 
+    border-radius: 10px !important; 
+    width: 100% !important;
+    margin-bottom: 10px !important; 
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.5) !important;
+}
+
+/* Estados interactivos para los botones de categorías */
+div.lista-categorias-vertical div.stButton > button:hover,
+div.lista-categorias-vertical div.stButton > button:focus,
+div.lista-categorias-vertical div.stButton > button:active {
+    background-color: #7A0000 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #FFFFFF !important;
 }
 
 div.boton-retroceder-contenedor div.stButton > button {
@@ -273,11 +290,11 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* DETECCIÓN GLOBAL DE LOS BOTONES "＋" DENTRO DE FILAS HORIZONTALES */
+/* BOTONES DE AGREGAR MÁS (＋) */
 div[data-testid="stHorizontalBlock"] div.stButton > button {
     background-color: #FFEB3B !important;
     color: #000000 !important;
-    border: 2px solid #8B0000 !important; /* Borde rojo guinda grueso */
+    border: 2px solid #8B0000 !important;
     border-radius: 6px !important;
     width: 32px !important;
     height: 32px !important;
@@ -294,7 +311,6 @@ div[data-testid="stHorizontalBlock"] div.stButton > button {
     box-sizing: border-box !important;
 }
 
-/* Forzar estados reactivos en pantallas táctiles y móviles */
 div[data-testid="stHorizontalBlock"] div.stButton > button:hover,
 div[data-testid="stHorizontalBlock"] div.stButton > button:focus,
 div[data-testid="stHorizontalBlock"] div.stButton > button:active {
@@ -304,9 +320,8 @@ div[data-testid="stHorizontalBlock"] div.stButton > button:active {
     box-shadow: 0px 1px 2px rgba(0,0,0,0.5) !important;
 }
 
-/* ELIMINACIÓN DE LA LÍNEA VISUAL AMARILLA (Manteniendo espacio estructural) */
 .divisor-plato { 
-    border-bottom: none !important;  /* Línea amarilla removida por completo */
+    border-bottom: none !important;  
     margin-top: 15px !important;     
     margin-bottom: 15px !important;  
     padding-bottom: 0px !important; 
