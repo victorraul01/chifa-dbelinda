@@ -275,6 +275,74 @@ div[data-testid="stTextInput"] label {
     color: #FFFFFF !important;
     font-weight: bold !important;
 }
+/* ===== PESTAÑA MI PEDIDO: TEXTOS MÁS VISIBLES ===== */
+
+/* Labels principales */
+div[data-testid="stTextInput"] label,
+div[data-testid="stRadio"] > label {
+    color: #FFEB3B !important;
+    font-size: 19px !important;
+    font-weight: 900 !important;
+    text-shadow: 2px 2px 4px #000000 !important;
+}
+
+/* Opciones de radio (Delivery, Recojo, Yape, Efectivo) */
+div[data-testid="stRadio"] label p {
+    color: #FFFFFF !important;
+    font-size: 17px !important;
+    font-weight: bold !important;
+    text-shadow: 2px 2px 4px #000000 !important;
+}
+
+/* Inputs (texto escrito) */
+div[data-testid="stTextInput"] input {
+    background-color: #F5F5F5 !important;
+    color: #000000 !important;
+    font-size: 17px !important;
+    font-weight: bold !important;
+    border: 2px solid #BDBDBD !important;
+    border-radius: 8px !important;
+}
+
+/* Placeholder */
+div[data-testid="stTextInput"] input::placeholder {
+    color: #444444 !important;
+    opacity: 1 !important;
+    font-weight: bold !important;
+}
+
+/* Mensajes de error */
+div[data-testid="stAlert"] {
+    background-color: rgba(255, 0, 0, 0.25) !important;
+    border: 1px solid red !important;
+}
+
+div[data-testid="stAlert"] p {
+    color: #FFFFFF !important;
+    font-size: 17px !important;
+    font-weight: bold !important;
+    text-shadow: 2px 2px 3px #000000 !important;
+}
+
+/* Texto del botón deshabilitado COMPLETE SUS DATOS */
+.enlace-wa-directo-siempre {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4) !important;
+}
+
+/* Botón vaciar carrito */
+div.boton-vaciar-pedido div.stButton > button {
+    background-color: #F5F5F5 !important;
+    border: 2px solid #BDBDBD !important;
+}
+
+div.boton-vaciar-pedido div.stButton > button p {
+    color: #000000 !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
