@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO (Modificado según requerimientos)
+# CSS MAESTRO
 # =========================================================
 st.markdown("""
 <style>
@@ -193,6 +193,11 @@ html, body, [data-testid="stApp"] { margin: 0 !important; padding: 0 !important;
 div[data-testid="stTabs"] { margin-top: 95px !important; }
 div[data-testid="stTabs"] > div:first-child { background-color: transparent !important; padding: 4px 10px !important; border-bottom: 2px solid #FFEB3B !important; }
 div[data-testid="stTabs"] button p { color: #FFFFFF !important; font-size: 15px !important; font-weight: bold !important; text-shadow: 2px 2px 3px #000000 !important; }
+
+/* CONTENEDOR DE LA PESTAÑA CON MARGEN INFERIOR PARA EVITAR EL MANAGE APP */
+.contenedor-seccion-platos {
+    padding: 10px 5px 80px 5px !important; /* Añadidos 80px abajo para dar el aire necesario */
+}
 
 div.lista-categorias-vertical div.stButton > button {
     background-color: rgba(0, 0, 0, 0.65) !important; color: #FFEB3B !important;
@@ -217,12 +222,10 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
 .columna-izquierda-info { display: flex !important; flex-direction: column !important; justify-content: center !important; min-width: 0 !important; flex: 1 !important; margin-right: 8px !important; }
 
-/* 1. TEXTOS MÁS GRANDES, NOTORIOS Y CON BORDE NEGRO RESALTANTE */
 .texto-nombre-plato { 
     color: #FFFFFF !important; 
-    font-size: 17px !important; /* Más grande */
-    font-weight: 900 !important; /* Más grueso */
-    /* Borde negro simulado por 4 ejes limpios */
+    font-size: 17px !important; 
+    font-weight: 900 !important; 
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important; 
 }
 .texto-descripcion-plato { 
@@ -236,36 +239,42 @@ div[data-testid="stHorizontalBlock"] > div { min-width: 0 !important; }
 }
 .texto-precio-plato { 
     color: #FFEB3B !important; 
-    font-size: 16px !important; /* Más grande */
+    font-size: 16px !important; 
     font-weight: 900 !important; 
     text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000 !important;
     white-space: nowrap !important; 
     margin-right: 2px;
 }
 
+/* MODIFICACIÓN: BOTÓN ＋ REDUCIDO Y SEPARADO VERTICALMENTE */
 div.btn-mas-nativo div.stButton > button {
-    background-color: #FFEB3B !important; color: #8B0000 !important; font-size: 18px !important; font-weight: 900 !important;
-    border-radius: 6px !important; width: 34px !important; height: 34px !important; min-width: 34px !important; max-width: 34px !important;
-    padding: 0px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    background-color: #FFEB3B !important; color: #8B0000 !important; 
+    font-size: 14px !important; /* Más pequeño */
+    font-weight: 900 !important;
+    border-radius: 6px !important; 
+    width: 28px !important; height: 28px !important; 
+    min-width: 28px !important; max-width: 28px !important;
+    padding: 0px !important; display: inline-flex !important; 
+    align-items: center !important; justify-content: center !important;
     border: none !important; box-shadow: 0px 2px 4px rgba(0,0,0,0.6) !important;
+    margin: 3px 0px !important; /* Margen para evitar que choquen entre sí */
 }
 
-/* 2. QUITAR LÍNEA DE SEPARACIÓN TOTALMENTE */
 .divisor-plato { 
     border-bottom: none !important; 
     margin-bottom: 0px !important; 
     padding-bottom: 0px !important; 
 }
 
-/* 3. REDUCCIÓN EXTREMA DE ESPACIO VERTICAL (RESPONSIVO EN CELULARES) */
+/* REDUCCIÓN DE ESPACIO VERTICAL */
 @media (max-width: 767px) {
     [data-testid="stVerticalBlock"] {
-        gap: 0.15rem !important; /* Compacta los elementos de Streamlit */
+        gap: 0.15rem !important; 
     }
     div[data-testid="stHorizontalBlock"] {
         padding-top: 0px !important;
         padding-bottom: 0px !important;
-        margin-bottom: -10px !important; /* Fuerza a las filas a juntarse hacia arriba */
+        margin-bottom: -6px !important; /* Ajustado ligeramente por el nuevo margen del botón */
     }
 }
 
@@ -301,7 +310,7 @@ tab_menu, tab_carta, tab_pedido = st.tabs(["🍱 Menú del Día", "📖 Platos a
 
 # PESTAÑA: 🍱 MENÚ DEL DÍA
 with tab_menu:
-    st.markdown('<div style="padding: 10px 5px; margin-top: 15px;">', unsafe_allow_html=True)
+    st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
@@ -322,6 +331,7 @@ with tab_carta:
     else:
         st.write("")
         if st.session_state["vista_actual"] == "menu_categorias":
+            st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
             st.markdown('<p style="color: #FFEB3B; font-weight: bold; margin-bottom: 12px; font-size:16px; text-shadow: 1px 1px 2px black;">📖 Elige una sección de nuestra Carta:</p>', unsafe_allow_html=True)
             categorias_excel = sorted(list(df_carta["Category"].unique()))
             todas_categorias = ["✨ Recomendaciones del Día"] + categorias_excel
@@ -331,6 +341,7 @@ with tab_carta:
                 icono = "🔥" if cat == "✨ Recomendaciones del Día" else "🥢"
                 st.button(f"{icono} {cat}", key=f"p_cat_{cat}", on_click=ir_a_categoria, args=(cat,), use_container_width=True)
             st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
         elif st.session_state["vista_actual"] == "ver_platos":
             cat_seleccionada = st.session_state["categoria_activa"]
@@ -338,7 +349,7 @@ with tab_carta:
             st.button("⬅️ Volver a Categorías", on_click=regresar_a_categorias)
             st.markdown('</div>', unsafe_allow_html=True)
             
-            st.markdown('<div style="padding: 5px 0px;">', unsafe_allow_html=True)
+            st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
             if cat_seleccionada == "✨ Recomendaciones del Día":
                 st.markdown('<div class="titulo-categoria-chifa">🔥 SUGERENCIAS DE LA CASA</div>', unsafe_allow_html=True)
                 cats_inicio = ["CHAUFA", "AEROPUERTO", "PLATOS DULCES"]
@@ -382,7 +393,7 @@ with tab_carta:
 
 # PESTAÑA: 🛒 MI PEDIDO
 with tab_pedido:
-    st.markdown('<div style="padding: 10px 5px; margin-top: 15px;">', unsafe_allow_html=True)
+    st.markdown('<div class="contenedor-seccion-platos">', unsafe_allow_html=True)
     if not st.session_state.carrito:
         st.markdown('<h3 style="color: white; text-shadow: 2px 2px 2px black;">Tu carrito está vacío.</h3>', unsafe_allow_html=True)
     else:
