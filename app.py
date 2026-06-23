@@ -175,7 +175,7 @@ def abrir_modal_dinamico():
         st.rerun()
 
 # =========================================================
-# CSS MAESTRO
+# CSS MAESTRO (ACTUALIZADO Y COMPACTADO)
 # =========================================================
 st.markdown("""
 <style>
@@ -213,7 +213,7 @@ div.boton-retroceder-contenedor div.stButton > button {
     border-radius: 8px !important; width: auto !important; margin-bottom: 15px !important;
 }
 
-/* MODIFICACIÓN: ALINEACIÓN Y CONTROL ULTRA ESTRICTO DE COLUMNAS HORIZONTALES */
+/* REESTRUCTURACIÓN DE FILAS: ALINEACIÓN VERTICAL ULTRA PRECISA */
 div[data-testid="stHorizontalBlock"] {
     display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
     align-items: center !important; justify-content: space-between !important; width: 100% !important;
@@ -221,7 +221,12 @@ div[data-testid="stHorizontalBlock"] {
 div[data-testid="stHorizontalBlock"] > div { 
     min-width: 0 !important; 
     display: flex !important;
-    align-items: center !important; /* Centra el botón verticalmente respecto a la info */
+    align-items: center !important; 
+    justify-content: center !important;
+}
+div[data-testid="stHorizontalBlock"] > div:first-child {
+    justify-content: flex-start !important;
+    flex: 1 !important;
 }
 
 .contenedor-fila-perfecta-col { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
@@ -252,39 +257,37 @@ div[data-testid="stHorizontalBlock"] > div {
     margin-right: 2px;
 }
 
-/* MODIFICACIÓN: CONTROL ABSOLUTO DEL BOTÓN COMPACTO "＋" INMUNE AL MODO CLARO */
-div.btn-mas-nativo {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-
-div.btn-mas-nativo div.stButton > button {
-    background-color: #FFEB3B !important; /* Forzado Amarillo Puro */
-    color: #000000 !important; /* Signo "+" en Negro Absoluto */
-    font-size: 13px !important; 
+/* CAMBIO RADICAL: SELECTOR DE MÁXIMA PRIORIDAD PARA MODO CLARO E INMUNE A STREAMLIT */
+div[data-testid="stHorizontalBlock"] button[id^="b"] {
+    background-color: #700000 !important; /* Rojo Oscuro / Vino fijo */
+    color: #FFFFFF !important; /* Signo "+" Blanco puro fijo */
+    font-size: 12px !important; 
     font-weight: 900 !important;
     border-radius: 4px !important; 
-    width: 22px !important; height: 22px !important; /* Más pequeño para alinearse perfectamente */
-    min-width: 22px !important; max-width: 22px !important;
+    width: 18px !important; 
+    height: 18px !important; /* Reducido al tamaño ideal para centrarse perfectamente */
+    min-width: 18px !important; 
+    max-width: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
     padding: 0px !important; 
+    margin: 0px !important;
     display: inline-flex !important; 
     align-items: center !important; 
     justify-content: center !important;
-    border: none !important; 
-    box-shadow: 0px 1px 3px rgba(0,0,0,0.5) !important;
-    margin: 0px !important;
+    border: 1px solid #FFEB3B !important; /* Borde amarillo para separar del fondo rojo */
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.4) !important;
+    line-height: 1 !important;
 }
 
-/* Sobrescribimos cualquier cambio de estado reactivo del navegador */
-div.btn-mas-nativo div.stButton > button:hover, 
-div.btn-mas-nativo div.stButton > button:focus, 
-div.btn-mas-nativo div.stButton > button:active {
-    background-color: #FFEB3B !important;
-    color: #000000 !important;
+/* Forzamos el mismo comportamiento en cualquier estado táctil en teléfonos móvil */
+div[data-testid="stHorizontalBlock"] button[id^="b"]:hover, 
+div[data-testid="stHorizontalBlock"] button[id^="b"]:focus, 
+div[data-testid="stHorizontalBlock"] button[id^="b"]:active {
+    background-color: #700000 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #FFEB3B !important;
     box-shadow: none !important;
-    border: none !important;
 }
 
 .divisor-plato { 
@@ -341,13 +344,11 @@ with tab_menu:
     st.markdown('<div class="titulo-categoria-chifa">🍱 MENÚ CHIFA DEL DÍA</div>', unsafe_allow_html=True)
     
     for plato in PLATOS_MENU_INTERNO:
-        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
+        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
         with col_izq:
             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{plato["Name"]}</span></div><span class="texto-precio-plato">S/. {plato["Price"]:.2f}</span></div>""", unsafe_allow_html=True)
         with col_der:
-            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
             st.button("＋", key=f"btn_menu_{plato['ID']}", on_click=click_agregar_plato, args=(plato, "Menú del Día", "MENÚ"))
-            st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -390,13 +391,11 @@ with tab_carta:
                     
                     for idx, row in df_aleatorio.iterrows():
                         plato_dict = {"ID": row["ID"], "Name": row["Name"], "Price": row["Price"]}
-                        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
+                        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]} <small style="color:#FFEB3B; font-size:9px;">({row["Category"]})</small></span></div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
-                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_sug_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", row["Category"]))
-                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<div class="titulo-categoria-chifa">📂 {cat_seleccionada}</div>', unsafe_allow_html=True)
@@ -408,13 +407,11 @@ with tab_carta:
                         if cat_seleccionada == "COMBOS" and str(row["Description"]).strip():
                             desc_html = f'<span class="texto-descripcion-plato">✨ {row["Description"]}</span>'
                         
-                        col_izq, col_der = st.columns([0.86, 0.14], gap="small")
+                        col_izq, col_der = st.columns([0.88, 0.12], gap="small")
                         with col_izq:
                             st.markdown(f"""<div class="contenedor-fila-perfecta-col"><div class="columna-izquierda-info"><span class="texto-nombre-plato">{row["Name"]}</span>{desc_html}</div><span class="texto-precio-plato">S/. {float(row["Price"]):.2f}</span></div>""", unsafe_allow_html=True)
                         with col_der:
-                            st.markdown('<div class="btn-mas-nativo">', unsafe_allow_html=True)
                             st.button("＋", key=f"btn_carta_{row['ID']}_{idx}", on_click=click_agregar_plato, args=(plato_dict, "Carta", cat_seleccionada))
-                            st.markdown('</div>', unsafe_allow_html=True)
                         st.markdown('<div class="divisor-plato"></div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
